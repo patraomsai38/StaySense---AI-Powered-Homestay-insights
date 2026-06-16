@@ -1,16 +1,177 @@
-# React + Vite
+# 🏡 StaySense AI - AI Powered Homestay Insights
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+StaySense AI is an AI-powered homestay and eco-tourism platform designed to help homestay owners improve guest experiences through intelligent review analysis, booking insights, and personalized travel recommendations.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🚀 Project Overview
 
-## React Compiler
+StaySense AI leverages Artificial Intelligence (AI) and Natural Language Processing (NLP) to analyze guest reviews and provide actionable insights for homestay owners.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+The platform aims to:
 
-## Expanding the ESLint configuration
+* Improve guest satisfaction
+* Enhance homestay management
+* Support sustainable eco-tourism
+* Provide data-driven business insights
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## ✨ Features
+
+### 🏠 Smart Homestay Experience
+
+* Modern responsive user interface
+* Homestay discovery platform
+* AI-powered guest experience insights
+
+### 🤖 AI Review Analysis
+
+* Sentiment Analysis
+* Review Categorization
+* Feedback Insights
+
+### 📊 Host Dashboard
+
+* Booking Statistics
+* Occupancy Analytics
+* Guest Satisfaction Metrics
+* AI Review Insights
+
+### 🌍 Travel Recommendations
+
+* Local Attractions
+* Restaurants & Cafes
+* Trekking Routes
+* Eco-Tourism Activities
+
+### 🔐 User Authentication UI
+
+* Login Interface
+* Forgot Password Option
+* Create Account Option
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+
+* React JS
+* Vite
+* Tailwind CSS
+* React Router DOM
+
+### Backend (Planned)
+
+* FastAPI
+
+### Database (Planned)
+
+* PostgreSQL (Supabase)
+
+### AI Technologies (Planned)
+
+* Natural Language Processing (NLP)
+* Sentiment Analysis
+* Recommendation Engine
+
+---
+
+## 📂 Project Structure
+
+```text
+src/
+│
+├── assets/
+│   └── logo.png
+│
+├── components/
+│   ├── Navbar.jsx
+│   ├── Hero.jsx
+│   ├── Card.jsx
+│   └── Footer.jsx
+│
+├── Pages/
+│   ├── Home.jsx
+│   ├── About.jsx
+│   ├── Dashboard.jsx
+│   └── Login.jsx
+│
+├── App.jsx
+├── main.jsx
+└── index.css
+```
+
+---
+
+## 📅 Week 2 Deliverables Completed
+
+✅ Frontend Skeleton Running Locally
+
+✅ Responsive Home Page
+
+✅ About Page
+
+✅ Dashboard Page
+
+✅ Login Page
+
+✅ Reusable Components
+
+✅ React Router Navigation
+
+✅ Tailwind CSS Integration
+
+✅ StaySense AI Branding & Logo
+
+✅ Mobile Responsive Layout
+
+---
+
+## ⚙️ Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/patraomsai38/StaySense---AI-Powered-Homestay-insights.git
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run development server:
+
+```bash
+npm run dev
+```
+
+Open:
+
+```text
+http://localhost:5173
+```
+
+---
+
+## 🔮 Future Enhancements
+
+* User Authentication System
+* Booking Management Module
+* AI Chatbot Support
+* Real-Time Notifications
+* Advanced Analytics Dashboard
+* AI Travel Recommendation Engine
+* Review Sentiment Visualization
+
+---
+
+## 👨‍💻 Developer
+
+**Om Sai Patra**
+
+Internship Project - StaySense AI
+
