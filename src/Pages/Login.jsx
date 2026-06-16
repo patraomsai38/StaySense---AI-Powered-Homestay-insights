@@ -4,12 +4,13 @@ import logo from "../assets/logo.png";
 
 function Login() {
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-green-100 to-green-300">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-green-100 via-green-50 to-green-300">
       <Navbar />
 
       <main className="flex-grow flex items-center justify-center p-6">
         <div className="bg-white/95 backdrop-blur-md shadow-2xl rounded-2xl p-8 w-full max-w-md border border-green-100">
-          {/* PASTE LOGO HERE */}
+
+          {/* Logo */}
           <div className="flex justify-center mb-4">
             <img
               src={logo}
@@ -18,6 +19,7 @@ function Login() {
             />
           </div>
 
+          {/* Heading */}
           <h1 className="text-3xl font-bold text-center text-green-700 mb-2">
             Welcome Back
           </h1>
@@ -26,40 +28,66 @@ function Login() {
             Login to StaySense AI
           </p>
 
-          {/* Username */}
-          <div>
-            <label className="block mb-2 font-medium">
-              Username
-            </label>
+          {/* Login Form */}
+          <form className="space-y-4">
 
-            <input
-              type="text"
-              placeholder="Enter username"
-              className="w-full border rounded-lg p-3"
-            />
+            {/* Username */}
+            <div>
+              <label className="block mb-2 font-medium">
+                Username
+              </label>
+
+              <input
+                type="text"
+                placeholder="Enter username"
+                className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+            </div>
+
+            {/* Password */}
+            <div>
+              <label className="block mb-2 font-medium">
+                Password
+              </label>
+
+              <input
+                type="password"
+                placeholder="Enter password"
+                className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+            </div>
+
+            {/* Forgot Password */}
+            <div className="text-right">
+              <p className="text-sm text-green-700 cursor-pointer hover:underline">
+                Forgot Password?
+              </p>
+            </div>
+
+            {/* Login Button */}
+            <button
+              type="submit"
+              className="w-full bg-green-700 text-white py-3 rounded-lg hover:bg-green-800 transition font-semibold"
+            >
+              Login
+            </button>
+
+          </form>
+
+          {/* Register Section */}
+          <div className="text-center mt-6 border-t border-gray-200 pt-5">
+
+            <p className="text-gray-600">
+              New to StaySense AI?
+            </p>
+
+            <button
+              className="mt-3 w-full border-2 border-green-700 text-green-700 py-3 rounded-lg font-semibold hover:bg-green-700 hover:text-white transition"
+            >
+              Create New Account
+            </button>
+
           </div>
-
-          {/* Password */}
-          <div className="mt-4">
-            <label className="block mb-2 font-medium">
-              Password
-            </label>
-
-            <input
-              type="password"
-              placeholder="Enter password"
-              className="w-full border rounded-lg p-3"
-            />
-          </div>
-          <p className="text-sm text-green-700 mt-2 cursor-pointer">
-  Forgot Password?
-</p>
-
-          <button
-            className="w-full bg-green-700 text-white py-3 rounded-lg mt-6"
-          >
-            Login
-          </button>
 
         </div>
       </main>
