@@ -61,6 +61,7 @@ function Dashboard() {
             <li>⚠️ Food quality received mixed feedback.</li>
             <li>📈 Positive reviews increased by 15% this month.</li>
             <li>🌿 Eco-tourism activities are highly rated.</li>
+            <li>⭐ Average guest rating improved by 8% this month.</li>
           </ul>
         </div>
 
