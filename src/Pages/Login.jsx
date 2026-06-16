@@ -51,6 +51,9 @@ function Login() {
               className="w-full border rounded-lg p-3"
             />
           </div>
+          <p className="text-sm text-green-700 mt-2 cursor-pointer">
+  Forgot Password?
+</p>
 
           <button
             className="w-full bg-green-700 text-white py-3 rounded-lg mt-6"
