@@ -8,17 +8,17 @@ function Home() {
     {
       title: "AI Review Analysis",
       description:
-        "Analyze guest reviews using sentiment analysis and NLP."
+        "Analyze guest reviews using sentiment analysis and NLP to understand customer satisfaction."
     },
     {
       title: "Smart Booking",
       description:
-        "Discover and book homestays based on preferences and ratings."
+        "Discover and book homestays based on location, budget, amenities, and ratings."
     },
     {
       title: "Travel Recommendations",
       description:
-        "Get personalized recommendations for attractions and activities."
+        "Get personalized recommendations for local attractions, restaurants, and activities."
     }
   ];
 
@@ -53,7 +53,7 @@ function Home() {
       {/* Statistics Section */}
       <section className="bg-green-700 text-white py-14">
         <div className="max-w-6xl mx-auto px-6">
-          <div className="grid md:grid-cols-4 gap-8 text-center">
+          <div className="grid md:grid-cols-5 gap-8 text-center">
 
             <div>
               <h3 className="text-4xl font-bold">500+</h3>
@@ -75,11 +75,16 @@ function Home() {
               <p>AI Assistance</p>
             </div>
 
+            <div>
+              <h3 className="text-4xl font-bold">50+</h3>
+              <p>Eco Tourism Partners</p>
+            </div>
+
           </div>
         </div>
       </section>
 
-      {/* Popular Features */}
+      {/* Platform Highlights */}
       <section className="max-w-6xl mx-auto px-6 py-16">
         <h2 className="text-4xl font-bold text-center text-green-700 mb-10">
           Platform Highlights
@@ -93,8 +98,8 @@ function Home() {
             </h3>
 
             <p className="text-gray-600">
-              Automatically identify positive, negative, and neutral
-              guest feedback to improve services.
+              Automatically identify positive, neutral, and negative
+              guest feedback to improve service quality.
             </p>
           </div>
 
@@ -104,8 +109,8 @@ function Home() {
             </h3>
 
             <p className="text-gray-600">
-              Visualize occupancy rates, booking trends, and guest
-              satisfaction metrics in one place.
+              Monitor occupancy rates, booking trends, and guest
+              satisfaction through interactive dashboards.
             </p>
           </div>
 
@@ -116,37 +121,42 @@ function Home() {
 
             <p className="text-gray-600">
               Recommend local attractions, trekking routes, and
-              sustainable travel experiences.
+              sustainable travel experiences for guests.
             </p>
           </div>
 
           <div className="bg-white shadow-xl rounded-xl p-6">
             <h3 className="text-2xl font-bold text-green-700 mb-3">
-              AI Chat Support
+              AI Guest Support
             </h3>
 
             <p className="text-gray-600">
-              Help guests instantly with booking information,
-              facilities, and travel guidance.
+              Provide instant assistance for bookings, facilities,
+              and local travel information through AI chat support.
             </p>
           </div>
 
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="bg-gradient-to-r from-green-700 to-green-500 text-white py-16 text-center">
-        <h2 className="text-4xl font-bold mb-4">
-          Transform Your Homestay Business
-        </h2>
+      {/* Call To Action */}
+      <section className="bg-gradient-to-r from-green-700 to-green-500 text-white py-16">
+        <div className="max-w-6xl mx-auto px-6 text-center">
 
-        <p className="text-lg mb-6">
-          Leverage AI-powered insights to improve guest satisfaction.
-        </p>
+          <h2 className="text-4xl font-bold mb-4">
+            Transform Your Homestay Business
+          </h2>
 
-        <button className="bg-white text-green-700 px-8 py-3 rounded-lg font-bold hover:scale-105 transition">
-          Get Started
-        </button>
+          <p className="text-lg mb-6">
+            Leverage AI-powered insights to improve guest satisfaction,
+            increase bookings, and enhance your digital presence.
+          </p>
+
+          <button className="bg-white text-green-700 px-8 py-3 rounded-lg font-bold shadow-lg hover:scale-105 transition">
+            Get Started
+          </button>
+
+        </div>
       </section>
 
       <Footer />
