@@ -4,11 +4,11 @@ import logo from "../assets/logo.png";
 
 function Login() {
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-green-100 via-green-50 to-green-300">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-green-100 via-green-50 to-green-300 dark:from-gray-900 dark:via-gray-800 dark:to-black dark:text-white transition-all duration-300">
       <Navbar />
 
       <main className="flex-grow flex items-center justify-center p-6">
-        <div className="bg-white/95 backdrop-blur-md shadow-2xl rounded-2xl p-8 w-full max-w-md border border-green-100">
+        <div className="bg-white/95 dark:bg-gray-800 backdrop-blur-md shadow-2xl rounded-2xl p-8 w-full max-w-md border border-green-100 dark:border-gray-700">
 
           {/* Logo */}
           <div className="flex justify-center mb-4">
@@ -20,11 +20,11 @@ function Login() {
           </div>
 
           {/* Heading */}
-          <h1 className="text-3xl font-bold text-center text-green-700 mb-2">
+          <h1 className="text-3xl font-bold text-center text-green-700 dark:text-green-400 mb-2">
             Welcome Back
           </h1>
 
-          <p className="text-center text-gray-500 mb-6">
+          <p className="text-center text-gray-500 dark:text-gray-300 mb-6">
             Login to StaySense AI
           </p>
 
@@ -40,7 +40,7 @@ function Login() {
               <input
                 type="text"
                 placeholder="Enter username"
-                className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="w-full border rounded-lg p-3 bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500"
               />
             </div>
 
@@ -53,15 +53,18 @@ function Login() {
               <input
                 type="password"
                 placeholder="Enter password"
-                className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="w-full border rounded-lg p-3 bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500"
               />
             </div>
 
             {/* Forgot Password */}
-            <div className="text-right">
-              <p className="text-sm text-green-700 cursor-pointer hover:underline">
+            <div className="flex justify-end">
+              <button
+                type="button"
+                className="text-sm md:text-base text-green-700 dark:text-green-400 hover:text-green-800 hover:underline transition"
+              >
                 Forgot Password?
-              </p>
+              </button>
             </div>
 
             {/* Login Button */}
@@ -75,14 +78,15 @@ function Login() {
           </form>
 
           {/* Register Section */}
-          <div className="text-center mt-6 border-t border-gray-200 pt-5">
+          <div className="text-center mt-6 border-t border-gray-200 dark:border-gray-600 pt-5">
 
-            <p className="text-gray-600">
+            <p className="text-gray-600 dark:text-gray-300">
               New to StaySense AI?
             </p>
 
             <button
-              className="mt-3 w-full border-2 border-green-700 text-green-700 py-3 rounded-lg font-semibold hover:bg-green-700 hover:text-white transition"
+              type="button"
+              className="mt-3 w-full border-2 border-green-700 text-green-700 dark:text-green-400 dark:border-green-400 py-3 px-4 rounded-lg font-semibold text-sm md:text-base hover:bg-green-700 hover:text-white transition duration-300"
             >
               Create New Account
             </button>

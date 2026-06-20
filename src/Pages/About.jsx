@@ -3,7 +3,7 @@ import Footer from "../components/Footer";
 
 function About() {
   return (
-    <div className="min-h-screen flex flex-col bg-green-50">
+    <div className="min-h-screen bg-green-50 dark:bg-gray-900 dark:text-white transition-all duration-300">
       <Navbar />
 
       <main className="flex-grow max-w-6xl mx-auto p-8">
