@@ -2,6 +2,7 @@ import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import Card from "../components/Card";
 import Footer from "../components/Footer";
+import ChatAssistant from "../components/ChatAssistant";
 
 function Home() {
   const features = [
@@ -158,6 +159,7 @@ function Home() {
 
         </div>
       </section>
+      <ChatAssistant /> 
 
       <Footer />
     </div>
