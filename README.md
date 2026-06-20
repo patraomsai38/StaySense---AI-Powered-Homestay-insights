@@ -1,6 +1,6 @@
 # 🏡 StaySense AI - AI Powered Homestay Insights
 
-StaySense AI is an AI-powered homestay and eco-tourism platform designed to help homestay owners improve guest experiences through intelligent review analysis, booking insights, and personalized travel recommendations.
+StaySense AI is an AI-powered homestay and eco-tourism platform designed to help homestay owners improve guest experiences through intelligent review analysis, booking insights, personalized travel recommendations, and smart homestay discovery.
 
 ---
 
@@ -10,10 +10,11 @@ StaySense AI leverages Artificial Intelligence (AI) and Natural Language Process
 
 The platform aims to:
 
-- Improve guest satisfaction
-- Enhance homestay management
-- Support sustainable eco-tourism
-- Provide data-driven business insights
+* Improve guest satisfaction
+* Enhance homestay management
+* Support sustainable eco-tourism
+* Provide data-driven business insights
+* Simplify homestay discovery and booking
 
 ---
 
@@ -21,41 +22,65 @@ The platform aims to:
 
 ### 🏠 Smart Homestay Experience
 
-- Modern responsive user interface
-- Homestay discovery platform
-- AI-powered guest experience insights
+* Modern responsive user interface
+* Homestay discovery platform
+* AI-powered guest experience insights
+
+### 🏨 Homestay Explorer & Booking
+
+* Search homestays by location
+* Filter by budget
+* Filter by guest ratings
+* Interactive booking workflow
+* Booking confirmation system
 
 ### 🤖 AI Review Analysis
 
-- Sentiment Analysis
-- Review Categorization
-- Feedback Insights
+* Sentiment Analysis
+* Review Categorization
+* Feedback Insights
+* AI-generated recommendations
 
 ### 📊 Host Dashboard
 
-- Booking Statistics
-- Occupancy Analytics
-- Guest Satisfaction Metrics
-- AI Review Insights
+* Booking Statistics
+* Occupancy Analytics
+* Guest Satisfaction Metrics
+* AI Review Insights
+* Booking Trend Charts
+* Review Sentiment Analysis Charts
 
 ### 🌍 Travel Recommendations
 
-- Local Attractions
-- Restaurants & Cafes
-- Trekking Routes
-- Eco-Tourism Activities
+* Local Attractions
+* Restaurants & Cafes
+* Trekking Routes
+* Eco-Tourism Activities
+
+### 💬 AI Chat Assistant
+
+* Interactive travel assistant
+* Homestay guidance
+* Travel recommendations
+* Smart user assistance
+
+### 🌦️ Weather Forecast
+
+* Local weather information
+* Travel planning support
+* Responsive weather widget
 
 ### 🔐 User Authentication UI
 
-- Login Interface
-- Forgot Password Option
-- Create Account Option
+* Login Interface
+* Forgot Password Option
+* Create Account Option
 
 ### 🌙 Dark / Light Mode
 
-- Theme Toggle Button
-- Persistent Theme Preference
-- Responsive Design Support
+* Theme Toggle Button
+* Persistent Theme Preference
+* Responsive Design Support
 
 ---
 
@@ -63,24 +88,25 @@ The platform aims to:
 
 ### Frontend
 
-- React JS
-- Vite
-- Tailwind CSS v4
-- React Router DOM
+* React JS
+* Vite
+* Tailwind CSS v4
+* React Router DOM
+* Recharts
 
 ### Backend (Planned)
 
-- FastAPI
+* FastAPI
 
 ### Database (Planned)
 
-- PostgreSQL (Supabase)
+* PostgreSQL (Supabase)
 
 ### AI Technologies (Planned)
 
-- Natural Language Processing (NLP)
-- Sentiment Analysis
-- Recommendation Engine
+* Natural Language Processing (NLP)
+* Sentiment Analysis
+* Recommendation Engine
 
 ---
 
@@ -97,6 +123,7 @@ src/
 │   ├── Hero.jsx
 │   ├── Card.jsx
 │   ├── Footer.jsx
+│   ├── ChatAssistant.jsx
 │   │
 │   └── ui/
 │       ├── Button.jsx
@@ -114,6 +141,7 @@ src/
 │   ├── About.jsx
 │   ├── Dashboard.jsx
 │   ├── Login.jsx
+│   ├── Booking.jsx
 │   └── ComponentsDemo.jsx
 │
 ├── App.jsx
@@ -191,8 +219,6 @@ Components Created:
 
 ### 🖥️ Component Showcase Page
 
-Created a dedicated demo page showcasing all reusable UI components.
-
 Available Route:
 
 ```text
@@ -201,11 +227,11 @@ Available Route:
 
 Demonstrates:
 
-- Buttons
-- Inputs
-- Modal
-- Toast Notifications
-- Loader
+* Buttons
+* Inputs
+* Modal
+* Toast Notifications
+* Loader
 
 ---
 
@@ -234,6 +260,28 @@ Tested across:
 ✅ Tablet (768px)
 
 ✅ Desktop (1440px)
+
+---
+
+### 🚀 Additional Week 3 Enhancements
+
+✅ AI Chat Assistant Widget
+
+✅ Weather Forecast Section
+
+✅ Interactive Analytics Dashboard
+
+✅ Booking Trends Visualization
+
+✅ Review Sentiment Analysis Chart
+
+✅ Homestay Explorer Page
+
+✅ Location-Based Search
+
+✅ Budget & Rating Filters
+
+✅ Booking Confirmation Workflow
 
 ---
 
@@ -267,27 +315,28 @@ http://localhost:5173/
 
 ## 🛣️ Available Routes
 
-| Route | Description |
-|---------|-------------|
-| `/` | Home Page |
-| `/about` | About Page |
-| `/dashboard` | Dashboard Page |
-| `/login` | Login Page |
-| `/components-demo` | UI Component Showcase |
+| Route              | Description                 |
+| ------------------ | --------------------------- |
+| `/`                | Home Page                   |
+| `/about`           | About Page                  |
+| `/dashboard`       | Analytics Dashboard         |
+| `/booking`         | Homestay Explorer & Booking |
+| `/login`           | Login Page                  |
+| `/components-demo` | UI Component Showcase       |
 
 ---
 
 ## 🔮 Future Enhancements
 
-- User Authentication System
-- Booking Management Module
-- AI Chatbot Support
-- Real-Time Notifications
-- Advanced Analytics Dashboard
-- AI Travel Recommendation Engine
-- Review Sentiment Visualization
-- FastAPI Backend Integration
-- PostgreSQL Database Integration
+* User Authentication System
+* Booking Management Module
+* AI Chatbot Integration with LLMs
+* Real-Time Notifications
+* Advanced Analytics Dashboard
+* AI Travel Recommendation Engine
+* Review Sentiment Visualization
+* FastAPI Backend Integration
+* PostgreSQL Database Integration
 
 ---
 
@@ -295,21 +344,27 @@ http://localhost:5173/
 
 ### Completed
 
-- Frontend Development
-- Routing
-- Responsive Design
-- Component Library
-- Dark / Light Mode
-- UI Showcase Page
-- Figma Wireframes
+* Frontend Development
+* Routing & Navigation
+* Responsive Design
+* Reusable Component Library
+* Dark / Light Mode
+* Component Showcase Page
+* Figma Wireframes
+* AI Chat Assistant
+* Weather Forecast Widget
+* Analytics Dashboard
+* Booking Trends Visualization
+* Review Sentiment Analysis
+* Homestay Explorer & Booking Workflow
 
 ### In Progress
 
-- Backend Development
-- Database Integration
-- Authentication System
-- AI Review Analysis Engine
-- Recommendation System
+* Backend Development
+* Database Integration
+* Authentication System
+* AI Review Analysis Engine
+* Recommendation System
 
 ---
 
@@ -320,4 +375,3 @@ http://localhost:5173/
 B.Tech Computer Science Engineering (AI & ML)
 
 StaySense AI – Internship Project
-
