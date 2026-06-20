@@ -32,8 +32,8 @@ function Navbar() {
           <Link to="/">Home</Link>
           <Link to="/about">About</Link>
           <Link to="/dashboard">Dashboard</Link>
+          <Link to="/booking">Book Now</Link>
           <Link to="/login">Login</Link>
-
           <button
             onClick={() => setDarkMode(!darkMode)}
             className="bg-white text-black px-3 py-1 rounded-lg text-sm font-semibold hover:bg-gray-200"
