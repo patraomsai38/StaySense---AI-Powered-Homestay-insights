@@ -1,9 +1,10 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Home from "./pages/Home";
-import About from "./pages/About";
-import Dashboard from "./pages/Dashboard";
-import Login from "./pages/Login";
+import Home from "./Pages/Home";
+import About from "./Pages/About";
+import Dashboard from "./Pages/Dashboard";
+import Login from "./Pages/Login";
+import ComponentsDemo from "./Pages/ComponentsDemo";
 
 function App() {
   return (
@@ -16,6 +17,11 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
 
         <Route path="/login" element={<Login />} />
+
+        <Route
+          path="/components-demo"
+          element={<ComponentsDemo />}
+        />
       </Routes>
     </BrowserRouter>
   );
