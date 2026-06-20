@@ -10,10 +10,10 @@ StaySense AI leverages Artificial Intelligence (AI) and Natural Language Process
 
 The platform aims to:
 
-* Improve guest satisfaction
-* Enhance homestay management
-* Support sustainable eco-tourism
-* Provide data-driven business insights
+- Improve guest satisfaction
+- Enhance homestay management
+- Support sustainable eco-tourism
+- Provide data-driven business insights
 
 ---
 
@@ -21,35 +21,41 @@ The platform aims to:
 
 ### 🏠 Smart Homestay Experience
 
-* Modern responsive user interface
-* Homestay discovery platform
-* AI-powered guest experience insights
+- Modern responsive user interface
+- Homestay discovery platform
+- AI-powered guest experience insights
 
 ### 🤖 AI Review Analysis
 
-* Sentiment Analysis
-* Review Categorization
-* Feedback Insights
+- Sentiment Analysis
+- Review Categorization
+- Feedback Insights
 
 ### 📊 Host Dashboard
 
-* Booking Statistics
-* Occupancy Analytics
-* Guest Satisfaction Metrics
-* AI Review Insights
+- Booking Statistics
+- Occupancy Analytics
+- Guest Satisfaction Metrics
+- AI Review Insights
 
 ### 🌍 Travel Recommendations
 
-* Local Attractions
-* Restaurants & Cafes
-* Trekking Routes
-* Eco-Tourism Activities
+- Local Attractions
+- Restaurants & Cafes
+- Trekking Routes
+- Eco-Tourism Activities
 
 ### 🔐 User Authentication UI
 
-* Login Interface
-* Forgot Password Option
-* Create Account Option
+- Login Interface
+- Forgot Password Option
+- Create Account Option
+
+### 🌙 Dark / Light Mode
+
+- Theme Toggle Button
+- Persistent Theme Preference
+- Responsive Design Support
 
 ---
 
@@ -57,24 +63,24 @@ The platform aims to:
 
 ### Frontend
 
-* React JS
-* Vite
-* Tailwind CSS
-* React Router DOM
+- React JS
+- Vite
+- Tailwind CSS v4
+- React Router DOM
 
 ### Backend (Planned)
 
-* FastAPI
+- FastAPI
 
 ### Database (Planned)
 
-* PostgreSQL (Supabase)
+- PostgreSQL (Supabase)
 
 ### AI Technologies (Planned)
 
-* Natural Language Processing (NLP)
-* Sentiment Analysis
-* Recommendation Engine
+- Natural Language Processing (NLP)
+- Sentiment Analysis
+- Recommendation Engine
 
 ---
 
@@ -90,13 +96,25 @@ src/
 │   ├── Navbar.jsx
 │   ├── Hero.jsx
 │   ├── Card.jsx
-│   └── Footer.jsx
+│   ├── Footer.jsx
+│   │
+│   └── ui/
+│       ├── Button.jsx
+│       ├── Input.jsx
+│       ├── Modal.jsx
+│       ├── Toast.jsx
+│       ├── Loader.jsx
+│       └── index.jsx
+│
+├── context/
+│   └── ThemeContext.jsx
 │
 ├── Pages/
 │   ├── Home.jsx
 │   ├── About.jsx
 │   ├── Dashboard.jsx
-│   └── Login.jsx
+│   ├── Login.jsx
+│   └── ComponentsDemo.jsx
 │
 ├── App.jsx
 ├── main.jsx
@@ -129,43 +147,169 @@ src/
 
 ---
 
-## ⚙️ Installation
+## 📅 Week 3 Deliverables Completed
 
-Clone the repository:
+### 🎨 Figma Wireframes
+
+Created wireframes for:
+
+✅ Home Screen
+
+✅ Dashboard Screen
+
+✅ Login / Signup Screen
+
+✅ Homestay Detail Screen
+
+✅ AI Review Analysis Screen
+
+---
+
+### 🧩 Reusable UI Component Library
+
+Implemented reusable UI components inside:
+
+```text
+src/components/ui/
+```
+
+Components Created:
+
+✅ Button Component
+
+✅ Input Component
+
+✅ Modal Component
+
+✅ Toast Component
+
+✅ Loader Component
+
+✅ Centralized Export File (index.jsx)
+
+---
+
+### 🖥️ Component Showcase Page
+
+Created a dedicated demo page showcasing all reusable UI components.
+
+Available Route:
+
+```text
+/components-demo
+```
+
+Demonstrates:
+
+- Buttons
+- Inputs
+- Modal
+- Toast Notifications
+- Loader
+
+---
+
+### 🌙 Dark / Light Mode
+
+Implemented:
+
+✅ Theme Toggle Button
+
+✅ React Context API
+
+✅ Local Storage Persistence
+
+✅ Dark Mode UI
+
+✅ Light Mode UI
+
+---
+
+### 📱 Responsive Design Testing
+
+Tested across:
+
+✅ Mobile (375px)
+
+✅ Tablet (768px)
+
+✅ Desktop (1440px)
+
+---
+
+## 🌐 Local Development
+
+### Clone Repository
 
 ```bash
 git clone https://github.com/patraomsai38/StaySense---AI-Powered-Homestay-insights.git
 ```
 
-Install dependencies:
+### Install Dependencies
 
 ```bash
 npm install
 ```
 
-Run development server:
+### Run Development Server
 
 ```bash
 npm run dev
 ```
 
-Open:
+### Open Application
 
 ```text
-http://localhost:5173
+http://localhost:5173/
 ```
+
+---
+
+## 🛣️ Available Routes
+
+| Route | Description |
+|---------|-------------|
+| `/` | Home Page |
+| `/about` | About Page |
+| `/dashboard` | Dashboard Page |
+| `/login` | Login Page |
+| `/components-demo` | UI Component Showcase |
 
 ---
 
 ## 🔮 Future Enhancements
 
-* User Authentication System
-* Booking Management Module
-* AI Chatbot Support
-* Real-Time Notifications
-* Advanced Analytics Dashboard
-* AI Travel Recommendation Engine
-* Review Sentiment Visualization
+- User Authentication System
+- Booking Management Module
+- AI Chatbot Support
+- Real-Time Notifications
+- Advanced Analytics Dashboard
+- AI Travel Recommendation Engine
+- Review Sentiment Visualization
+- FastAPI Backend Integration
+- PostgreSQL Database Integration
+
+---
+
+## 📌 Current Project Status
+
+### Completed
+
+- Frontend Development
+- Routing
+- Responsive Design
+- Component Library
+- Dark / Light Mode
+- UI Showcase Page
+- Figma Wireframes
+
+### In Progress
+
+- Backend Development
+- Database Integration
+- Authentication System
+- AI Review Analysis Engine
+- Recommendation System
 
 ---
 
@@ -173,5 +317,7 @@ http://localhost:5173
 
 **Om Sai Patra**
 
-Internship Project - StaySense AI
+B.Tech Computer Science Engineering (AI & ML)
+
+StaySense AI – Internship Project
 
