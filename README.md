@@ -1,10 +1,10 @@
-# 🏡 StaySense AI - AI Powered Homestay Insights
+# 🏡 StaySense AI – AI Powered Homestay Insights
 
 StaySense AI is an AI-powered homestay and eco-tourism platform designed to help homestay owners improve guest experiences through intelligent review analysis, booking insights, personalized travel recommendations, and smart homestay discovery.
 
 ---
 
-## 🚀 Project Overview
+# 🚀 Project Overview
 
 StaySense AI leverages Artificial Intelligence (AI) and Natural Language Processing (NLP) to analyze guest reviews and provide actionable insights for homestay owners.
 
@@ -18,30 +18,39 @@ The platform aims to:
 
 ---
 
-## ✨ Features
+# ✨ Features
 
-### 🏠 Smart Homestay Experience
+## 🏠 Smart Homestay Experience
 
 * Modern responsive user interface
+* Responsive design across all devices
 * Homestay discovery platform
 * AI-powered guest experience insights
 
-### 🏨 Homestay Explorer & Booking
+---
+
+## 🏨 Homestay Explorer & Booking
 
 * Search homestays by location
 * Filter by budget
 * Filter by guest ratings
 * Interactive booking workflow
 * Booking confirmation system
+* Guest details form
+* Check-in & Check-out date selection
 
-### 🤖 AI Review Analysis
+---
+
+## 🤖 AI Review Analysis
 
 * Sentiment Analysis
 * Review Categorization
 * Feedback Insights
 * AI-generated recommendations
 
-### 📊 Host Dashboard
+---
+
+## 📊 Host Dashboard
 
 * Booking Statistics
 * Occupancy Analytics
@@ -50,108 +59,148 @@ The platform aims to:
 * Booking Trend Charts
 * Review Sentiment Analysis Charts
 
-### 🌍 Travel Recommendations
+---
+
+## 🌍 Travel Recommendations
 
 * Local Attractions
 * Restaurants & Cafes
 * Trekking Routes
 * Eco-Tourism Activities
 
-### 💬 AI Chat Assistant
+---
+
+## 💬 AI Chat Assistant
 
 * Interactive travel assistant
-* Homestay guidance
-* Travel recommendations
-* Smart user assistance
+* Smart homestay guidance
+* AI travel recommendations
+* User assistance interface
 
-### 🌦️ Weather Forecast
+---
+
+## 🌦️ Weather Forecast Widget
 
 * Local weather information
 * Travel planning support
 * Responsive weather widget
 
-### 🔐 User Authentication UI
+---
+
+## 🔐 User Authentication UI
 
 * Login Interface
-* Forgot Password Option
+* Forgot Password
 * Create Account Option
-
-### 🌙 Dark / Light Mode
-
-* Theme Toggle Button
-* Persistent Theme Preference
-* Responsive Design Support
 
 ---
 
-## 🛠️ Tech Stack
+## 🌙 Dark / Light Mode
 
-### Frontend
+* Theme Toggle Button
+* React Context API
+* Persistent Theme Preference
+* Local Storage Support
+
+---
+
+# 🛠 Tech Stack
+
+## Frontend
 
 * React JS
 * Vite
 * Tailwind CSS v4
 * React Router DOM
+* React Context API
 * Recharts
 
-### Backend (Planned)
+---
 
-* FastAPI
+## Backend
 
-### Database (Planned)
+* Node.js
+* Express.js
+* CORS
+* dotenv
+
+---
+
+## API Testing
+
+* Postman
+
+---
+
+## Database (Upcoming)
 
 * PostgreSQL (Supabase)
 
-### AI Technologies (Planned)
+---
+
+## AI Technologies (Planned)
 
 * Natural Language Processing (NLP)
 * Sentiment Analysis
 * Recommendation Engine
+* AI Chatbot Integration
 
 ---
 
-## 📂 Project Structure
+# 📂 Project Structure
 
 ```text
-src/
+StaySense/
 │
-├── assets/
-│   └── logo.png
+├── backend/
+│   ├── server.js
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── .env.example
+│   └── .gitignore
 │
-├── components/
-│   ├── Navbar.jsx
-│   ├── Hero.jsx
-│   ├── Card.jsx
-│   ├── Footer.jsx
-│   ├── ChatAssistant.jsx
+├── src/
 │   │
-│   └── ui/
-│       ├── Button.jsx
-│       ├── Input.jsx
-│       ├── Modal.jsx
-│       ├── Toast.jsx
-│       ├── Loader.jsx
-│       └── index.jsx
+│   ├── assets/
+│   │   └── logo.png
+│   │
+│   ├── components/
+│   │   ├── Navbar.jsx
+│   │   ├── Hero.jsx
+│   │   ├── Card.jsx
+│   │   ├── Footer.jsx
+│   │   ├── ChatAssistant.jsx
+│   │   │
+│   │   └── ui/
+│   │       ├── Button.jsx
+│   │       ├── Input.jsx
+│   │       ├── Modal.jsx
+│   │       ├── Toast.jsx
+│   │       ├── Loader.jsx
+│   │       └── index.jsx
+│   │
+│   ├── context/
+│   │   └── ThemeContext.jsx
+│   │
+│   ├── Pages/
+│   │   ├── Home.jsx
+│   │   ├── About.jsx
+│   │   ├── Dashboard.jsx
+│   │   ├── Booking.jsx
+│   │   ├── Login.jsx
+│   │   └── ComponentsDemo.jsx
+│   │
+│   ├── App.jsx
+│   ├── main.jsx
+│   └── index.css
 │
-├── context/
-│   └── ThemeContext.jsx
-│
-├── Pages/
-│   ├── Home.jsx
-│   ├── About.jsx
-│   ├── Dashboard.jsx
-│   ├── Login.jsx
-│   ├── Booking.jsx
-│   └── ComponentsDemo.jsx
-│
-├── App.jsx
-├── main.jsx
-└── index.css
+├── README.md
+└── package.json
 ```
 
 ---
 
-## 📅 Week 2 Deliverables Completed
+# 📅 Week 2 Deliverables Completed
 
 ✅ Frontend Skeleton Running Locally
 
@@ -175,25 +224,21 @@ src/
 
 ---
 
-## 📅 Week 3 Deliverables Completed
+# 📅 Week 3 Deliverables Completed
 
-### 🎨 Figma Wireframes
+## 🎨 Figma Wireframes
 
 Created wireframes for:
 
-✅ Home Screen
-
-✅ Dashboard Screen
-
-✅ Login / Signup Screen
-
-✅ Homestay Detail Screen
-
-✅ AI Review Analysis Screen
+* ✅ Home Screen
+* ✅ Dashboard Screen
+* ✅ Login / Signup Screen
+* ✅ Homestay Detail Screen
+* ✅ AI Review Analysis Screen
 
 ---
 
-### 🧩 Reusable UI Component Library
+## 🧩 Reusable UI Component Library
 
 Implemented reusable UI components inside:
 
@@ -203,21 +248,16 @@ src/components/ui/
 
 Components Created:
 
-✅ Button Component
-
-✅ Input Component
-
-✅ Modal Component
-
-✅ Toast Component
-
-✅ Loader Component
-
-✅ Centralized Export File (index.jsx)
+* ✅ Button Component
+* ✅ Input Component
+* ✅ Modal Component
+* ✅ Toast Component
+* ✅ Loader Component
+* ✅ Centralized Export File (`index.jsx`)
 
 ---
 
-### 🖥️ Component Showcase Page
+## 🖥 Component Showcase Page
 
 Available Route:
 
@@ -235,77 +275,120 @@ Demonstrates:
 
 ---
 
-### 🌙 Dark / Light Mode
+## 🌙 Dark / Light Mode
 
 Implemented:
 
-✅ Theme Toggle Button
-
-✅ React Context API
-
-✅ Local Storage Persistence
-
-✅ Dark Mode UI
-
-✅ Light Mode UI
+* ✅ Theme Toggle Button
+* ✅ React Context API
+* ✅ Local Storage Persistence
+* ✅ Dark Mode UI
+* ✅ Light Mode UI
 
 ---
 
-### 📱 Responsive Design Testing
+## 📱 Responsive Design Testing
 
 Tested across:
 
-✅ Mobile (375px)
-
-✅ Tablet (768px)
-
-✅ Desktop (1440px)
+* ✅ Mobile (375px)
+* ✅ Tablet (768px)
+* ✅ Desktop (1440px)
 
 ---
 
-### 🚀 Additional Week 3 Enhancements
+## 🚀 Additional Week 3 Enhancements
 
-✅ AI Chat Assistant Widget
-
-✅ Weather Forecast Section
-
-✅ Interactive Analytics Dashboard
-
-✅ Booking Trends Visualization
-
-✅ Review Sentiment Analysis Chart
-
-✅ Homestay Explorer Page
-
-✅ Location-Based Search
-
-✅ Budget & Rating Filters
-
-✅ Booking Confirmation Workflow
+* ✅ AI Chat Assistant Widget
+* ✅ Weather Forecast Widget
+* ✅ Interactive Analytics Dashboard
+* ✅ Booking Trends Visualization
+* ✅ Review Sentiment Analysis Charts
+* ✅ Homestay Explorer
+* ✅ Location-Based Search
+* ✅ Budget & Rating Filters
+* ✅ Booking Confirmation Workflow
 
 ---
 
-## 🌐 Local Development
+# 📅 Week 4 Deliverables Completed
 
-### Clone Repository
+## ⚙ Backend Development
+
+Developed a backend using **Node.js** and **Express.js**.
+
+Implemented:
+
+* ✅ Express Server
+* ✅ CORS Configuration
+* ✅ Environment Variables using dotenv
+* ✅ JSON Request Parsing
+* ✅ Error Handling Middleware
+
+---
+
+## 🔗 REST API Endpoints
+
+Implemented the following REST APIs:
+
+| Method | Endpoint                                   | Description                  |
+| ------ | ------------------------------------------ | ---------------------------- |
+| GET    | `/api/homestays`                           | Get all homestays            |
+| GET    | `/api/homestays/:id`                       | Get a homestay by ID         |
+| POST   | `/api/homestays`                           | Create a new homestay        |
+| PUT    | `/api/homestays/:id`                       | Update homestay details      |
+| DELETE | `/api/homestays/:id`                       | Delete a homestay            |
+| GET    | `/api/homestays/search/location/:location` | Search homestays by location |
+
+---
+
+## 🔄 Frontend Connected to Backend
+
+Implemented:
+
+* ✅ Fetch API Integration
+* ✅ Dynamic Homestay Loading
+* ✅ Backend Data Rendering
+* ✅ Loading State
+* ✅ Error Handling
+
+---
+
+## 🧪 API Testing
+
+Completed API testing using **Postman**.
+
+Included:
+
+* ✅ CRUD API Testing
+* ✅ Search Endpoint Testing
+* ✅ Exported API Collection
+
+---
+
+# 🌐 Local Development
+
+## Clone Repository
 
 ```bash
 git clone https://github.com/patraomsai38/StaySense---AI-Powered-Homestay-insights.git
 ```
 
-### Install Dependencies
+---
+
+## Install Frontend
 
 ```bash
 npm install
 ```
 
-### Run Development Server
+Run Frontend
 
 ```bash
 npm run dev
 ```
 
-### Open Application
+Frontend URL:
 
 ```text
 http://localhost:5173/
@@ -313,7 +396,28 @@ http://localhost:5173/
 
 ---
 
-## 🛣️ Available Routes
+## Install Backend
+
+```bash
+cd backend
+npm install
+```
+
+Run Backend
+
+```bash
+npm run dev
+```
+
+Backend URL:
+
+```text
+http://localhost:5000/
+```
+
+---
+
+# 🛣 Available Routes
 
 | Route              | Description                 |
 | ------------------ | --------------------------- |
@@ -326,52 +430,68 @@ http://localhost:5173/
 
 ---
 
-## 🔮 Future Enhancements
+# 📌 Current Project Status
 
-* User Authentication System
-* Booking Management Module
-* AI Chatbot Integration with LLMs
-* Real-Time Notifications
-* Advanced Analytics Dashboard
-* AI Travel Recommendation Engine
-* Review Sentiment Visualization
-* FastAPI Backend Integration
-* PostgreSQL Database Integration
-
----
-
-## 📌 Current Project Status
-
-### Completed
+## ✅ Completed
 
 * Frontend Development
+* Backend Development
+* REST API Implementation
 * Routing & Navigation
 * Responsive Design
-* Reusable Component Library
+* Reusable UI Component Library
 * Dark / Light Mode
 * Component Showcase Page
 * Figma Wireframes
 * AI Chat Assistant
 * Weather Forecast Widget
-* Analytics Dashboard
-* Booking Trends Visualization
-* Review Sentiment Analysis
-* Homestay Explorer & Booking Workflow
-
-### In Progress
-
-* Backend Development
-* Database Integration
-* Authentication System
-* AI Review Analysis Engine
-* Recommendation System
+* Interactive Dashboard
+* Booking Trend Visualization
+* Review Sentiment Charts
+* Homestay Explorer
+* Booking Workflow
+* Frontend-Backend Integration
+* API Testing using Postman
 
 ---
 
-## 👨‍💻 Developer
+## 🚧 In Progress
+
+* PostgreSQL Database Integration
+* User Authentication System
+* AI Review Analysis Engine
+* Recommendation System
+* AI Chatbot Integration
+* Live Weather API
+* Payment Gateway Integration
+
+---
+
+# 🔮 Future Enhancements
+
+* JWT Authentication
+* PostgreSQL (Supabase) Integration
+* AI Travel Recommendation Engine
+* Review Sentiment Visualization
+* Real-Time Notifications
+* Booking History
+* Email Notifications
+* Admin Dashboard
+* AI-powered Chatbot using LLMs
+* Google Maps Integration
+* Payment Gateway
+* Review Recommendation Engine
+
+---
+
+# 👨‍💻 Developer
 
 **Om Sai Patra**
 
-B.Tech Computer Science Engineering (AI & ML)
+**B.Tech Computer Science Engineering (AI & ML)**
 
-StaySense AI – Internship Project
+**Technology Business Incubator (TBI)**
+
+**AI-Assisted Full Stack Web Development Internship**
+
+**StaySense AI – AI Powered Homestay Insights**
