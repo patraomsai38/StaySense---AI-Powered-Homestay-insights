@@ -1,62 +1,42 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 function Booking() {
-  const homestays = [
-    {
-      id: 1,
-      name: "Mountain Retreat",
-      location: "Rishikesh",
-      price: 2499,
-      rating: 4.9,
-    },
-    {
-      id: 2,
-      name: "Riverside Cottage",
-      location: "Rishikesh",
-      price: 1999,
-      rating: 4.8,
-    },
-    {
-      id: 3,
-      name: "Forest View Stay",
-      location: "Mussoorie",
-      price: 1799,
-      rating: 4.7,
-    },
-    {
-      id: 4,
-      name: "Eco Valley Resort",
-      location: "Nainital",
-      price: 2999,
-      rating: 4.9,
-    },
-    {
-      id: 5,
-      name: "Green Hills Homestay",
-      location: "Manali",
-      price: 2299,
-      rating: 4.6,
-    },
-    {
-      id: 6,
-      name: "Lake View Cottage",
-      location: "Nainital",
-      price: 2699,
-      rating: 4.8,
-    },
-  ];
+  const [homestays, setHomestays] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   const [budget, setBudget] = useState("all");
   const [rating, setRating] = useState("all");
   const [search, setSearch] = useState("");
-  const [selectedStay, setSelectedStay] = useState("");
-  const [guestName, setGuestName] = useState("");
-  const [checkIn, setCheckIn] = useState("");
-  const [checkOut, setCheckOut] = useState("");
-  const [guests, setGuests] = useState(1);
-  const [bookingConfirmed, setBookingConfirmed] = useState(false);
+
+  const [selectedStay, setSelectedStay] = useState(null);
+
+  const [bookingData, setBookingData] = useState({
+    name: "",
+    checkIn: "",
+    checkOut: "",
+    guests: 1,
+  });
+
+  const [bookingSuccess, setBookingSuccess] = useState(false);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/homestays")
+      .then((res) => {
+        if (!res.ok) throw new Error("Unable to fetch data");
+        return res.json();
+      })
+      .then((data) => {
+        setHomestays(data);
+        setLoading(false);
+      })
+      .catch(() => {
+        setError("Failed to connect to backend.");
+        setLoading(false);
+      });
+  }, []);
 
   const filteredHomestays = homestays.filter((stay) => {
     const budgetMatch =
@@ -80,8 +60,18 @@ function Booking() {
     return budgetMatch && ratingMatch && searchMatch;
   });
 
-  const handleBooking = (name) => {
-    setSelectedStay(name);
+  const handleBooking = () => {
+    if (
+      bookingData.name === "" ||
+      bookingData.checkIn === "" ||
+      bookingData.checkOut === ""
+    ) {
+      alert("Please fill all booking details.");
+      return;
+    }
+
+    setSelectedStay(null);
+    setBookingSuccess(true);
   };
 
   return (
@@ -90,168 +80,27 @@ function Booking() {
 
       <main className="max-w-7xl mx-auto px-6 py-10">
 
-        <h1 className="text-4xl font-bold text-center text-green-700 dark:text-green-400 mb-3">
+        <h1 className="text-4xl font-bold text-center text-green-700 dark:text-green-400">
           Explore Homestays
         </h1>
 
-        <p className="text-center text-gray-600 dark:text-gray-300 mb-10">
-          Discover the perfect stay based on your budget, rating, and location.
+        <p className="text-center text-gray-600 dark:text-gray-300 mt-3 mb-10">
+          Find the perfect stay according to your budget, reviews and location.
         </p>
 
-        {/* Booking Modal */}
-{selectedStay && (
-  <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-    <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-2xl max-w-md w-full">
-
-      {!bookingConfirmed ? (
-        <>
-          <h2 className="text-2xl font-bold text-green-700 mb-6">
-            Book {selectedStay}
-          </h2>
-
-          <div className="space-y-4">
-
-            <input
-              type="text"
-              placeholder="Enter your full name"
-              value={guestName}
-              onChange={(e) => setGuestName(e.target.value)}
-              className="w-full border rounded-lg p-3 dark:bg-gray-700"
-            />
-
-            <div>
-              <label className="block mb-1 font-medium">
-                Check-in Date
-              </label>
-
-              <input
-                type="date"
-                value={checkIn}
-                onChange={(e) => setCheckIn(e.target.value)}
-                className="w-full border rounded-lg p-3 dark:bg-gray-700"
-              />
-            </div>
-
-            <div>
-              <label className="block mb-1 font-medium">
-                Check-out Date
-              </label>
-
-              <input
-                type="date"
-                value={checkOut}
-                onChange={(e) => setCheckOut(e.target.value)}
-                className="w-full border rounded-lg p-3 dark:bg-gray-700"
-              />
-            </div>
-
-            <div>
-              <label className="block mb-1 font-medium">
-                Number of Guests
-              </label>
-
-              <input
-                type="number"
-                min="1"
-                value={guests}
-                onChange={(e) => setGuests(e.target.value)}
-                className="w-full border rounded-lg p-3 dark:bg-gray-700"
-              />
-            </div>
-
-            <div className="flex gap-3">
-
-              <button
-                onClick={() => setSelectedStay("")}
-                className="flex-1 border border-gray-400 py-3 rounded-lg"
-              >
-                Cancel
-              </button>
-
-              <button
-                onClick={() => {
-                  if (
-                    guestName &&
-                    checkIn &&
-                    checkOut
-                  ) {
-                    setBookingConfirmed(true);
-                  } else {
-                    alert("Please fill all booking details.");
-                  }
-                }}
-                className="flex-1 bg-green-700 text-white py-3 rounded-lg hover:bg-green-800"
-              >
-                Confirm Booking
-              </button>
-
-            </div>
-
-          </div>
-        </>
-      ) : (
-        <>
-          <h2 className="text-3xl font-bold text-green-700 mb-4 text-center">
-            ✅ Booking Confirmed
-          </h2>
-
-          <div className="space-y-3 mb-6">
-
-            <p>
-              <strong>Name:</strong> {guestName}
-            </p>
-
-            <p>
-              <strong>Homestay:</strong> {selectedStay}
-            </p>
-
-            <p>
-              <strong>Guests:</strong> {guests}
-            </p>
-
-            <p>
-              <strong>Check-in:</strong> {checkIn}
-            </p>
-
-            <p>
-              <strong>Check-out:</strong> {checkOut}
-            </p>
-
-          </div>
-
-          <button
-            onClick={() => {
-              setSelectedStay("");
-              setBookingConfirmed(false);
-              setGuestName("");
-              setCheckIn("");
-              setCheckOut("");
-              setGuests(1);
-            }}
-            className="w-full bg-green-700 text-white py-3 rounded-lg hover:bg-green-800"
-          >
-            Close
-          </button>
-        </>
-      )}
-
-    </div>
-  </div>
-)}
-
-
-
         {/* Filters */}
+
         <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 mb-10">
-          <h2 className="text-2xl font-bold mb-4">
-            Filter Homestays
+
+          <h2 className="text-2xl font-bold mb-5">
+            Search & Filter
           </h2>
 
           <div className="grid md:grid-cols-3 gap-4">
 
             <input
               type="text"
-              placeholder="Search by location..."
+              placeholder="Search Location..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="border rounded-lg p-3 dark:bg-gray-700"
@@ -274,48 +123,182 @@ function Booking() {
               className="border rounded-lg p-3 dark:bg-gray-700"
             >
               <option value="all">All Ratings</option>
-              <option value="4.5">4.5+ Stars</option>
-              <option value="4.7">4.7+ Stars</option>
-              <option value="4.9">4.9 Stars</option>
+              <option value="4.5">4.5+</option>
+              <option value="4.7">4.7+</option>
+              <option value="4.9">4.9</option>
             </select>
 
           </div>
+
         </div>
 
-        {/* Homestay Cards */}
+        {loading && (
+          <h2 className="text-center text-xl font-semibold">
+            Loading Homestays...
+          </h2>
+        )}
+
+        {error && (
+          <h2 className="text-center text-red-600 font-semibold">
+            {error}
+          </h2>
+        )}
+
         <div className="grid md:grid-cols-3 gap-8">
 
           {filteredHomestays.map((stay) => (
+
             <div
               key={stay.id}
               className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 hover:scale-105 transition"
             >
-              <h3 className="text-2xl font-bold mb-2">
-                🏡 {stay.name}
-              </h3>
 
-              <p className="text-gray-600 dark:text-gray-300">
+              <h2 className="text-2xl font-bold">
+                🏡 {stay.name}
+              </h2>
+
+              <p className="mt-2">
                 📍 {stay.location}
               </p>
 
-              <p className="mt-3 text-green-700 font-bold">
+              <p className="mt-2 text-green-700 font-bold">
                 ⭐ {stay.rating}
               </p>
 
-              <p className="mt-2 text-xl font-bold">
+              <p className="text-xl font-bold mt-2">
                 ₹{stay.price}/night
               </p>
 
               <button
-                onClick={() => handleBooking(stay.name)}
-                className="w-full mt-5 bg-green-700 text-white py-3 rounded-lg hover:bg-green-800 transition"
+                onClick={() => setSelectedStay(stay)}
+                className="w-full mt-5 bg-green-700 text-white py-3 rounded-lg hover:bg-green-800"
               >
                 Book Now
               </button>
+
             </div>
+
           ))}
 
         </div>
+
+        {/* Booking Form */}
+
+        {selectedStay && (
+
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+
+            <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-2xl w-full max-w-md">
+
+              <h2 className="text-3xl font-bold text-green-700 mb-6">
+                Book {selectedStay.name}
+              </h2>
+
+              <input
+                type="text"
+                placeholder="Your Name"
+                className="w-full border rounded-lg p-3 mb-4 dark:bg-gray-700"
+                onChange={(e) =>
+                  setBookingData({
+                    ...bookingData,
+                    name: e.target.value,
+                  })
+                }
+              />
+
+              <label>Check In</label>
+
+              <input
+                type="date"
+                className="w-full border rounded-lg p-3 mb-4 dark:bg-gray-700"
+                onChange={(e) =>
+                  setBookingData({
+                    ...bookingData,
+                    checkIn: e.target.value,
+                  })
+                }
+              />
+
+              <label>Check Out</label>
+
+              <input
+                type="date"
+                className="w-full border rounded-lg p-3 mb-4 dark:bg-gray-700"
+                onChange={(e) =>
+                  setBookingData({
+                    ...bookingData,
+                    checkOut: e.target.value,
+                  })
+                }
+              />
+
+              <input
+                type="number"
+                min="1"
+                placeholder="Guests"
+                className="w-full border rounded-lg p-3 mb-6 dark:bg-gray-700"
+                onChange={(e) =>
+                  setBookingData({
+                    ...bookingData,
+                    guests: e.target.value,
+                  })
+                }
+              />
+
+              <div className="flex gap-4">
+
+                <button
+                  onClick={handleBooking}
+                  className="flex-1 bg-green-700 text-white py-3 rounded-lg"
+                >
+                  Confirm Booking
+                </button>
+
+                <button
+                  onClick={() => setSelectedStay(null)}
+                  className="flex-1 border border-gray-400 py-3 rounded-lg"
+                >
+                  Cancel
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        )}
+
+        {/* Booking Success */}
+
+        {bookingSuccess && (
+
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+
+            <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-xl text-center max-w-md">
+
+              <h2 className="text-3xl font-bold text-green-700 mb-5">
+                🎉 Booking Confirmed
+              </h2>
+
+              <p className="mb-6">
+                Thank you <b>{bookingData.name}</b>.
+                <br />
+                Your booking has been confirmed successfully.
+              </p>
+
+              <button
+                onClick={() => setBookingSuccess(false)}
+                className="bg-green-700 text-white px-6 py-3 rounded-lg"
+              >
+                Close
+              </button>
+
+            </div>
+
+          </div>
+
+        )}
 
       </main>
 
