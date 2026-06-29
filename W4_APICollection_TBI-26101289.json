@@ -1,0 +1,399 @@
+{
+  "info": {
+    "_postman_id": "6fc15898-c0a7-44a6-93b1-153fffc15506",
+    "name": "StaySense API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "56239362",
+    "_collection_link": "https://go.postman.co/collection/56239362-6fc15898-c0a7-44a6-93b1-153fffc15506?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "HTTP Request",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": [
+        {
+          "name": "Get All Homestays",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/homestays/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "homestays",
+                "1"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "X-Powered-By",
+              "value": "Express"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "254"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"fe-m/z/92YSOIVz4ZrrvTXit7xRj0M\""
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 29 Jun 2026 04:14:47 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "cookie": [],
+          "body": "[\n    {\n        \"id\": 1,\n        \"name\": \"Mountain Retreat\",\n        \"location\": \"Rishikesh\",\n        \"price\": 2499,\n        \"rating\": 4.9\n    },\n    {\n        \"id\": 2,\n        \"name\": \"Riverside Cottage\",\n        \"location\": \"Rishikesh\",\n        \"price\": 1999,\n        \"rating\": 4.8\n    },\n    {\n        \"id\": 3,\n        \"name\": \"Forest View Stay\",\n        \"location\": \"Mussoorie\",\n        \"price\": 1799,\n        \"rating\": 4.7\n    }\n]"
+        },
+        {
+          "name": "Get Homestay by ID",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/homestays/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "homestays",
+                "1"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "X-Powered-By",
+              "value": "Express"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "83"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"53-ZKjW1h7+FO/uNwPrnNy9AVqj7sU\""
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 29 Jun 2026 04:17:31 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"id\": 1,\n    \"name\": \"Mountain Retreat\",\n    \"location\": \"Rishikesh\",\n    \"price\": 2499,\n    \"rating\": 4.9\n}"
+        },
+        {
+          "name": "Create Homestays",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Green Paradise\",\r\n  \"location\": \"Dehradun\",\r\n  \"price\": 2300,\r\n  \"rating\": 4.8\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/homestays",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "homestays"
+              ]
+            }
+          },
+          "status": "Created",
+          "code": 201,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "X-Powered-By",
+              "value": "Express"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "80"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"50-LMivD0HT3ua8Z3yi7YtdRmBmXjA\""
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 29 Jun 2026 04:19:09 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"id\": 4,\n    \"name\": \"Green Paradise\",\n    \"location\": \"Dehradun\",\n    \"price\": 2300,\n    \"rating\": 4.8\n}"
+        },
+        {
+          "name": "Update Homestays",
+          "originalRequest": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"price\": 2200\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/homestays/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "homestays",
+                "1"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "X-Powered-By",
+              "value": "Express"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "83"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"53-3HGqNjfDEbh/lEb250s+Oe776to\""
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 29 Jun 2026 04:20:25 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"id\": 1,\n    \"name\": \"Mountain Retreat\",\n    \"location\": \"Rishikesh\",\n    \"price\": 2200,\n    \"rating\": 4.9\n}"
+        },
+        {
+          "name": "Delete Homestays",
+          "originalRequest": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"price\": 2200\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/homestays/3",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "homestays",
+                "3"
+              ]
+            }
+          },
+          "status": "No Content",
+          "code": 204,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "X-Powered-By",
+              "value": "Express"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 29 Jun 2026 04:21:19 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "cookie": [],
+          "body": null
+        },
+        {
+          "name": "Search Homestays",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"price\": 2200\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/homestays/search/location/Rishikesh",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "homestays",
+                "search",
+                "location",
+                "Rishikesh"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "X-Powered-By",
+              "value": "Express"
+            },
+            {
+              "key": "Access-Control-Allow-Origin",
+              "value": "*"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json; charset=utf-8"
+            },
+            {
+              "key": "Content-Length",
+              "value": "170"
+            },
+            {
+              "key": "ETag",
+              "value": "W/\"aa-AUeQ0lXI6k6RXFVf5Nq59Pl7siM\""
+            },
+            {
+              "key": "Date",
+              "value": "Mon, 29 Jun 2026 04:22:34 GMT"
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive"
+            },
+            {
+              "key": "Keep-Alive",
+              "value": "timeout=5"
+            }
+          ],
+          "cookie": [],
+          "body": "[\n    {\n        \"id\": 1,\n        \"name\": \"Mountain Retreat\",\n        \"location\": \"Rishikesh\",\n        \"price\": 2200,\n        \"rating\": 4.9\n    },\n    {\n        \"id\": 2,\n        \"name\": \"Riverside Cottage\",\n        \"location\": \"Rishikesh\",\n        \"price\": 1999,\n        \"rating\": 4.8\n    }\n]"
+        }
+      ]
+    }
+  ]
+}
