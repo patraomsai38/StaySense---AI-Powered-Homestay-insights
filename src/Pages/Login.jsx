@@ -1,8 +1,32 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import logo from "../assets/logo.png";
 
 function Login() {
+  const navigate = useNavigate();
+
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+
+    if (!username || !password) {
+      alert("Please enter username and password.");
+      return;
+    }
+
+    // Save login status
+    localStorage.setItem("isLoggedIn", "true");
+    localStorage.setItem("username", username);
+
+    alert("Login Successful!");
+
+    navigate("/booking");
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-green-100 via-green-50 to-green-300 dark:from-gray-900 dark:via-gray-800 dark:to-black dark:text-white transition-all duration-300">
       <Navbar />
@@ -29,7 +53,7 @@ function Login() {
           </p>
 
           {/* Login Form */}
-          <form className="space-y-4">
+          <form onSubmit={handleLogin} className="space-y-4">
 
             {/* Username */}
             <div>
@@ -40,6 +64,8 @@ function Login() {
               <input
                 type="text"
                 placeholder="Enter username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 className="w-full border rounded-lg p-3 bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500"
               />
             </div>
@@ -53,6 +79,8 @@ function Login() {
               <input
                 type="password"
                 placeholder="Enter password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="w-full border rounded-lg p-3 bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500"
               />
             </div>
