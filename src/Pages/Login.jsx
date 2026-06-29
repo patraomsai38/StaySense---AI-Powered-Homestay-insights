@@ -18,9 +18,8 @@ function Login() {
       return;
     }
 
-    // Save login status
-    localStorage.setItem("isLoggedIn", "true");
-    localStorage.setItem("username", username);
+    sessionStorage.setItem("isLoggedIn", "true");
+    sessionStorage.setItem("username", username);
 
     alert("Login Successful!");
 

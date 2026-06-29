@@ -66,7 +66,7 @@ function Booking() {
   });
 
   const handleBookNow = (stay) => {
-    const isLoggedIn = localStorage.getItem("isLoggedIn");
+    const isLoggedIn = sessionStorage.getItem("isLoggedIn");
 
     if (!isLoggedIn) {
       alert("Please login before booking a homestay.");
@@ -77,7 +77,7 @@ function Booking() {
     setSelectedStay(stay);
 
     setBookingData({
-      name: localStorage.getItem("username") || "",
+      name: sessionStorage.getItem("username") || "",
       checkIn: "",
       checkOut: "",
       guests: 1,

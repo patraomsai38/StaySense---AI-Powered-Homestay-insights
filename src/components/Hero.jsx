@@ -4,8 +4,8 @@ function Hero() {
   const navigate = useNavigate();
 
   const handleExplore = () => {
-    const isLoggedIn = localStorage.getItem("isLoggedIn");
-
+    const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+    
     if (isLoggedIn) {
       navigate("/booking");
     } else {
