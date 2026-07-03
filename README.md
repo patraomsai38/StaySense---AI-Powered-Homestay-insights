@@ -121,6 +121,7 @@ The platform aims to:
 
 * Node.js
 * Express.js
+* Prisma ORM
 * CORS
 * dotenv
 
@@ -132,9 +133,16 @@ The platform aims to:
 
 ---
 
-## Database (Upcoming)
+## Database
 
-* PostgreSQL (Supabase)
+* PostgreSQL
+* Supabase
+
+---
+
+## ORM
+
+* Prisma ORM
 
 ---
 
@@ -152,12 +160,19 @@ The platform aims to:
 ```text
 StaySense/
 │
-├── backend/
-│   ├── server.js
-│   ├── package.json
-│   ├── package-lock.json
-│   ├── .env.example
-│   └── .gitignore
+backend/
+├── prisma/
+│   ├── schema.prisma
+│   ├── migrations/
+│   └── seed.js
+│
+├── prismaClient.js
+├── server.js
+├── package.json
+├── package-lock.json
+├── .env
+├── .env.example
+└── .gitignore
 │
 ├── src/
 │   │
@@ -365,6 +380,191 @@ Included:
 * ✅ Exported API Collection
 
 ---
+# 📅 Week 5 Deliverables Completed
+
+## 🗄 Database Integration
+
+Integrated PostgreSQL using **Supabase** with **Prisma ORM**.
+
+Completed:
+
+- ✅ PostgreSQL Database Setup
+- ✅ Supabase Cloud Database
+- ✅ Prisma ORM Integration
+- ✅ Database Migration
+- ✅ Prisma Client Generation
+- ✅ Seed Data
+
+---
+
+## 🔄 Persistent CRUD Operations
+
+Migrated all REST APIs from in-memory storage to PostgreSQL.
+
+Completed:
+
+- ✅ Create Homestay
+- ✅ Read Homestays
+- ✅ Read Homestay by ID
+- ✅ Update Homestay
+- ✅ Delete Homestay
+- ✅ Search Homestays by Location
+
+---
+
+## 🗄 Database Choice
+
+This project uses **PostgreSQL** hosted on **Supabase**.
+
+### Why PostgreSQL?
+
+- Structured relational database
+- Supports relationships between Users, Homestays and Bookings
+- Reliable cloud-hosted storage
+- Easy integration with Prisma ORM
+- Persistent storage for CRUD operations
+
+---
+
+## 🗺 Database Schema
+
+The application contains three entities:
+
+- User
+- Homestay
+- Booking
+
+Relationships:
+
+- One User can have multiple Bookings.
+- One Homestay can have multiple Bookings.
+- Each Booking belongs to one User and one Homestay.
+
+> **Insert your schema diagram below**
+
+```text
+User
+   │
+   │ 1 : M
+   │
+Booking
+   │
+   │ M : 1
+   │
+Homestay
+
+---
+
+# ⚙ Set Up the Database
+
+Follow these steps to configure the PostgreSQL database using Supabase.
+
+## 1. Clone the Repository
+
+```bash
+git clone https://github.com/patraomsai38/StaySense---AI-Powered-Homestay-insights.git
+cd StaySense---AI-Powered-Homestay-insights
+```
+
+---
+
+## 2. Install Dependencies
+
+### Frontend
+
+```bash
+npm install
+```
+
+### Backend
+
+```bash
+cd backend
+npm install
+```
+
+---
+
+## 3. Configure Environment Variables
+
+Create a `.env` file inside the `backend` directory and add the following variables:
+
+```env
+PORT=5000
+DATABASE_URL=your_supabase_postgresql_connection_string
+```
+
+> Replace `your_supabase_postgresql_connection_string` with your actual PostgreSQL connection string from Supabase.
+
+---
+
+## 4. Run Database Migration
+
+Apply the Prisma schema to your PostgreSQL database.
+
+```bash
+npx prisma migrate dev --name init
+```
+
+---
+
+## 5. Generate Prisma Client
+
+```bash
+npx prisma generate
+```
+
+---
+
+## 6. Seed the Database
+
+Populate the database with sample homestay data.
+
+```bash
+node prisma/seed.js
+```
+
+---
+
+## 7. Start the Backend Server
+
+```bash
+npm run dev
+```
+
+The backend server will run at:
+
+```text
+http://localhost:5000
+```
+
+---
+
+## 8. Start the Frontend
+
+Open a new terminal and run:
+
+```bash
+npm run dev
+```
+
+The frontend will run at:
+
+```text
+http://localhost:5173
+```
+
+---
+
+## 9. Verify the Database Connection
+
+Open the application and verify that:
+
+- ✅ Homestays are loaded from the PostgreSQL database.
+- ✅ Create, Read, Update and Delete (CRUD) operations work successfully.
+- ✅ Data persists after refreshing the application.
+
+---
 
 # 🌐 Local Development
 
@@ -437,6 +637,13 @@ http://localhost:5000/
 * Frontend Development
 * Backend Development
 * REST API Implementation
+* Frontend-Backend Integration
+* PostgreSQL Database Integration (Supabase)
+* Prisma ORM Integration
+* Database Schema Design
+* Database Migration using Prisma
+* Persistent CRUD Operations
+* REST API Testing using Postman
 * Routing & Navigation
 * Responsive Design
 * Reusable UI Component Library
@@ -450,27 +657,27 @@ http://localhost:5000/
 * Review Sentiment Charts
 * Homestay Explorer
 * Booking Workflow
-* Frontend-Backend Integration
-* API Testing using Postman
+* Search & Filter Functionality
+* Environment Variable Configuration
 
 ---
 
 ## 🚧 In Progress
 
-* PostgreSQL Database Integration
-* User Authentication System
+* User Authentication System (JWT)
 * AI Review Analysis Engine
-* Recommendation System
+* AI-powered Travel Recommendation System
 * AI Chatbot Integration
-* Live Weather API
+* Live Weather API Integration
 * Payment Gateway Integration
+* Booking History & User Profiles
+* Admin Dashboard
 
 ---
 
 # 🔮 Future Enhancements
 
 * JWT Authentication
-* PostgreSQL (Supabase) Integration
 * AI Travel Recommendation Engine
 * Review Sentiment Visualization
 * Real-Time Notifications
