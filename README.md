@@ -440,18 +440,52 @@ Relationships:
 - One Homestay can have multiple Bookings.
 - Each Booking belongs to one User and one Homestay.
 
-> **Insert your schema diagram below**
+> *                      ┌─────────────────────────┐
+                         │         User            │
+                         ├─────────────────────────┤
+                         │ id (PK)                 │
+                         │ username (Unique)       │
+                         │ password                │
+                         │ createdAt               │
+                         └──────────┬──────────────┘
+                                    │
+                                    │ 1
+                                    │
+                                    │
+                                    │ *
+                         ┌──────────▼──────────────┐
+                         │       Booking           │
+                         ├─────────────────────────┤
+                         │ id (PK)                 │
+                         │ checkIn                 │
+                         │ checkOut                │
+                         │ guests                  │
+                         │ createdAt               │
+                         │ userId (FK)             │
+                         │ homestayId (FK)         │
+                         └──────────┬──────────────┘
+                                    │
+                                    │ *
+                                    │
+                                    │ 1
+                                    │
+                         ┌──────────▼──────────────┐
+                         │      Homestay           │
+                         ├─────────────────────────┤
+                         │ id (PK)                 │
+                         │ name                    │
+                         │ location                │
+                         │ price                   │
+                         │ rating                  │
+                         │ description             │
+                         │ image                   │
+                         └─────────────────────────┘
+---
+## 🗄 Database Schema
 
-```text
-User
-   │
-   │ 1 : M
-   │
-Booking
-   │
-   │ M : 1
-   │
-Homestay
+The following ER diagram illustrates the database structure and relationships used in StaySense AI.
+
+![Database Schema](./docs/W5_SchemaDiagram_[TBI-26101289].png)
 
 ---
 
