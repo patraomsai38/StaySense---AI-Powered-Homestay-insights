@@ -455,7 +455,7 @@ Homestay
 
 ---
 
-# ⚙ Set Up the Database
+## ⚙ Set Up the Database
 
 Follow these steps to configure the PostgreSQL database using Supabase.
 

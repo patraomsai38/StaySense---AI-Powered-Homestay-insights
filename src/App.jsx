@@ -1,11 +1,12 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+import Register from "./Pages/Register";
 import Home from "./Pages/Home";
 import About from "./Pages/About";
 import Dashboard from "./Pages/Dashboard";
 import Login from "./Pages/Login";
 import ComponentsDemo from "./Pages/ComponentsDemo";
 import Booking from "./Pages/Booking";
+import MyBookings from "./Pages/MyBookings";
 
 function App() {
   return (
@@ -20,6 +21,10 @@ function App() {
         <Route path="/login" element={<Login />} />
 
         <Route path="/booking" element={<Booking />} />
+
+        <Route path="/register" element={<Register />} />
+
+        <Route path="/my-bookings" element={<MyBookings />} />
 
         <Route
           path="/components-demo"

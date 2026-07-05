@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
@@ -10,22 +11,38 @@ function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = (e) => {
-    e.preventDefault();
+  const handleLogin = async (e) => {
+  e.preventDefault();
 
-    if (!username || !password) {
-      alert("Please enter username and password.");
-      return;
-    }
+  if (!username || !password) {
+    alert("Please enter username and password.");
+    return;
+  }
+
+  try {
+    const response = await axios.post(
+      "http://localhost:5000/api/auth/login",
+      {
+        username,
+        password,
+      }
+    );
+
+    const user = response.data.user;
 
     sessionStorage.setItem("isLoggedIn", "true");
-    sessionStorage.setItem("username", username);
+    sessionStorage.setItem("userId", user.id);
+    sessionStorage.setItem("username", user.username);
 
     alert("Login Successful!");
 
     navigate("/booking");
-  };
-
+  } catch (error) {
+    alert(
+      error.response?.data?.message || "Login Failed"
+    );
+  }
+};
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-green-100 via-green-50 to-green-300 dark:from-gray-900 dark:via-gray-800 dark:to-black dark:text-white transition-all duration-300">
       <Navbar />
@@ -112,11 +129,12 @@ function Login() {
             </p>
 
             <button
-              type="button"
-              className="mt-3 w-full border-2 border-green-700 text-green-700 dark:text-green-400 dark:border-green-400 py-3 px-4 rounded-lg font-semibold text-sm md:text-base hover:bg-green-700 hover:text-white transition duration-300"
-            >
-              Create New Account
-            </button>
+type="button"
+onClick={() => navigate("/register")}
+className="mt-3 w-full border-2 border-green-700 text-green-700 dark:text-green-400 dark:border-green-400 py-3 px-4 rounded-lg font-semibold text-sm md:text-base hover:bg-green-700 hover:text-white transition duration-300"
+>
+Create New Account
+</button>
 
           </div>
 

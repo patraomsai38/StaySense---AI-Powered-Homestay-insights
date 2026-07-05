@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import axios from "axios";
 
 function Booking() {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ function Booking() {
   const [search, setSearch] = useState("");
 
   const [selectedStay, setSelectedStay] = useState(null);
+  const [confirmedStay, setConfirmedStay] = useState(null);
 
   const [bookingData, setBookingData] = useState({
     name: "",
@@ -25,6 +27,17 @@ function Booking() {
 
   const [bookingSuccess, setBookingSuccess] = useState(false);
 
+  // Protect Booking Page
+  useEffect(() => {
+    const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+
+    if (!isLoggedIn) {
+      alert("Please login first.");
+      navigate("/login");
+    }
+  }, [navigate]);
+
+  // Fetch Homestays
   useEffect(() => {
     fetch("http://localhost:5000/api/homestays")
       .then((res) => {
@@ -43,6 +56,7 @@ function Booking() {
       });
   }, []);
 
+  // Filters
   const filteredHomestays = homestays.filter((stay) => {
     const budgetMatch =
       budget === "all"
@@ -65,15 +79,8 @@ function Booking() {
     return budgetMatch && ratingMatch && searchMatch;
   });
 
+  // Book Now
   const handleBookNow = (stay) => {
-    const isLoggedIn = sessionStorage.getItem("isLoggedIn");
-
-    if (!isLoggedIn) {
-      alert("Please login before booking a homestay.");
-      navigate("/login");
-      return;
-    }
-
     setSelectedStay(stay);
 
     setBookingData({
@@ -84,7 +91,8 @@ function Booking() {
     });
   };
 
-  const handleBooking = () => {
+  // Confirm Booking
+  const handleBooking = async () => {
     if (
       bookingData.name === "" ||
       bookingData.checkIn === "" ||
@@ -94,12 +102,40 @@ function Booking() {
       return;
     }
 
-    setSelectedStay(null);
-    setBookingSuccess(true);
+    try {
+      const userId = sessionStorage.getItem("userId");
+
+      if (!userId) {
+        alert("Please login first.");
+        navigate("/login");
+        return;
+      }
+
+      await axios.post("http://localhost:5000/api/bookings", {
+        userId: Number(userId),
+        homestayId: Number(selectedStay.id),
+        checkIn: bookingData.checkIn,
+        checkOut: bookingData.checkOut,
+        guests: Number(bookingData.guests),
+      });
+
+      setConfirmedStay(selectedStay);
+      setSelectedStay(null);
+      setBookingSuccess(true);
+
+    } catch (error) {
+      console.error(error);
+
+      alert(
+        error.response?.data?.message ||
+          "Booking Failed"
+      );
+    }
   };
 
   return (
     <div className="min-h-screen bg-green-50 dark:bg-gray-900 dark:text-white transition-all duration-300">
+
       <Navbar />
 
       <main className="max-w-7xl mx-auto px-6 py-10">
@@ -109,8 +145,11 @@ function Booking() {
         </h1>
 
         <p className="text-center text-gray-600 dark:text-gray-300 mt-3 mb-10">
-          Find the perfect stay according to your budget, reviews and location.
+          Find the perfect stay according to your budget,
+          reviews and location.
         </p>
+
+        {/* Filters */}
 
         <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 mb-10">
 
@@ -124,30 +163,50 @@ function Booking() {
               type="text"
               placeholder="Search Location..."
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) =>
+                setSearch(e.target.value)
+              }
               className="border rounded-lg p-3 dark:bg-gray-700"
             />
 
             <select
               value={budget}
-              onChange={(e) => setBudget(e.target.value)}
+              onChange={(e) =>
+                setBudget(e.target.value)
+              }
               className="border rounded-lg p-3 dark:bg-gray-700"
             >
               <option value="all">All Budgets</option>
-              <option value="2000">Under ₹2000</option>
-              <option value="2500">Under ₹2500</option>
-              <option value="3000">Above ₹2500</option>
+              <option value="2000">
+                Under ₹2000
+              </option>
+              <option value="2500">
+                Under ₹2500
+              </option>
+              <option value="3000">
+                Above ₹2500
+              </option>
             </select>
 
             <select
               value={rating}
-              onChange={(e) => setRating(e.target.value)}
+              onChange={(e) =>
+                setRating(e.target.value)
+              }
               className="border rounded-lg p-3 dark:bg-gray-700"
             >
-              <option value="all">All Ratings</option>
-              <option value="4.5">4.5+</option>
-              <option value="4.7">4.7+</option>
-              <option value="4.9">4.9</option>
+              <option value="all">
+                All Ratings
+              </option>
+              <option value="4.5">
+                4.5+
+              </option>
+              <option value="4.7">
+                4.7+
+              </option>
+              <option value="4.9">
+                4.9+
+              </option>
             </select>
 
           </div>
@@ -167,11 +226,14 @@ function Booking() {
         )}
 
         <div className="grid md:grid-cols-3 gap-8">
-                    {filteredHomestays.map((stay) => (
+
+          {filteredHomestays.map((stay) => (
+
             <div
               key={stay.id}
               className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 hover:scale-105 transition"
             >
+
               <h2 className="text-2xl font-bold">
                 🏡 {stay.name}
               </h2>
@@ -194,11 +256,13 @@ function Booking() {
               >
                 Book Now
               </button>
-            </div>
-          ))}
-        </div>
 
-        {/* Booking Form */}
+            </div>
+
+          ))}
+
+        </div>
+                {/* Booking Modal */}
 
         {selectedStay && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -255,8 +319,8 @@ function Booking() {
               <input
                 type="number"
                 min="1"
-                value={bookingData.guests}
                 className="w-full border rounded-lg p-3 mb-6 dark:bg-gray-700"
+                value={bookingData.guests}
                 onChange={(e) =>
                   setBookingData({
                     ...bookingData,
@@ -269,7 +333,7 @@ function Booking() {
 
                 <button
                   onClick={handleBooking}
-                  className="flex-1 bg-green-700 text-white py-3 rounded-lg hover:bg-green-800"
+                  className="flex-1 bg-green-700 text-white py-3 rounded-lg hover:bg-green-800 transition"
                 >
                   Confirm Booking
                 </button>
@@ -287,49 +351,69 @@ function Booking() {
 
           </div>
         )}
+                {/* Booking Success Popup */}
 
-        {/* Booking Success */}
-
-        {bookingSuccess && (
+        {bookingSuccess && confirmedStay && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
 
-            <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-xl text-center max-w-md">
+            <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-2xl max-w-md w-full text-center">
 
               <h2 className="text-3xl font-bold text-green-700 mb-5">
-                🎉 Booking Confirmed
+                🎉 Booking Confirmed!
               </h2>
 
-              <p className="mb-4 text-lg">
-                Thank you <b>{bookingData.name}</b>.
+              <p className="text-lg mb-4">
+                Thank you,
+                <span className="font-bold"> {bookingData.name}</span>
               </p>
 
-              <p className="mb-6">
-                Your booking at <b>{selectedStay?.name}</b> has been confirmed successfully.
-              </p>
+              <div className="bg-green-100 dark:bg-green-900 rounded-lg p-5 text-left mb-6">
 
-              <div className="bg-green-100 dark:bg-green-900 rounded-lg p-4 mb-6 text-left">
+                <p className="mb-2">
+                  <strong>🏡 Homestay:</strong>{" "}
+                  {confirmedStay.name}
+                </p>
 
-                <p>
-                  <strong>📍 Location:</strong> {selectedStay?.location}
+                <p className="mb-2">
+                  <strong>📍 Location:</strong>{" "}
+                  {confirmedStay.location}
+                </p>
+
+                <p className="mb-2">
+                  <strong>💰 Price:</strong> ₹
+                  {confirmedStay.price}/night
+                </p>
+
+                <p className="mb-2">
+                  <strong>📅 Check In:</strong>{" "}
+                  {bookingData.checkIn}
+                </p>
+
+                <p className="mb-2">
+                  <strong>📅 Check Out:</strong>{" "}
+                  {bookingData.checkOut}
                 </p>
 
                 <p>
-                  <strong>📅 Check In:</strong> {bookingData.checkIn}
-                </p>
-
-                <p>
-                  <strong>📅 Check Out:</strong> {bookingData.checkOut}
-                </p>
-
-                <p>
-                  <strong>👥 Guests:</strong> {bookingData.guests}
+                  <strong>👥 Guests:</strong>{" "}
+                  {bookingData.guests}
                 </p>
 
               </div>
 
               <button
-                onClick={() => setBookingSuccess(false)}
-                className="bg-green-700 text-white px-6 py-3 rounded-lg hover:bg-green-800"
+                onClick={() => {
+                  setBookingSuccess(false);
+                  setConfirmedStay(null);
+
+                  setBookingData({
+                    name: sessionStorage.getItem("username") || "",
+                    checkIn: "",
+                    checkOut: "",
+                    guests: 1,
+                  });
+                }}
+                className="bg-green-700 hover:bg-green-800 text-white px-6 py-3 rounded-lg transition"
               >
                 Close
               </button>
@@ -342,6 +426,7 @@ function Booking() {
       </main>
 
       <Footer />
+
     </div>
   );
 }
