@@ -29,13 +29,13 @@ function Booking() {
 
   // Protect Booking Page
   useEffect(() => {
-    const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+  const token = localStorage.getItem("token");
 
-    if (!isLoggedIn) {
-      alert("Please login first.");
-      navigate("/login");
-    }
-  }, [navigate]);
+  if (!token) {
+    alert("Please login first.");
+    navigate("/login");
+  }
+}, [navigate]);
 
   // Fetch Homestays
   useEffect(() => {
@@ -84,7 +84,7 @@ function Booking() {
     setSelectedStay(stay);
 
     setBookingData({
-      name: sessionStorage.getItem("username") || "",
+      name: JSON.parse(localStorage.getItem("user"))?.username || "",
       checkIn: "",
       checkOut: "",
       guests: 1,
@@ -103,21 +103,30 @@ function Booking() {
     }
 
     try {
-      const userId = sessionStorage.getItem("userId");
+      const userId = localStorage.getItem("userId");
 
+const token = localStorage.getItem("token");
       if (!userId) {
         alert("Please login first.");
         navigate("/login");
         return;
       }
 
-      await axios.post("http://localhost:5000/api/bookings", {
-        userId: Number(userId),
-        homestayId: Number(selectedStay.id),
-        checkIn: bookingData.checkIn,
-        checkOut: bookingData.checkOut,
-        guests: Number(bookingData.guests),
-      });
+      await axios.post(
+  "http://localhost:5000/api/bookings",
+  {
+    userId: Number(userId),
+    homestayId: Number(selectedStay.id),
+    checkIn: bookingData.checkIn,
+    checkOut: bookingData.checkOut,
+    guests: Number(bookingData.guests),
+  },
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
 
       setConfirmedStay(selectedStay);
       setSelectedStay(null);
@@ -407,7 +416,7 @@ function Booking() {
                   setConfirmedStay(null);
 
                   setBookingData({
-                    name: sessionStorage.getItem("username") || "",
+                    name: JSON.parse(localStorage.getItem("user"))?.username || "",
                     checkIn: "",
                     checkOut: "",
                     guests: 1,

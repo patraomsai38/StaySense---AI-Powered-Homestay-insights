@@ -1,29 +1,51 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 function MyBookings() {
+  const navigate = useNavigate();
+
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      alert("Please login first.");
+      navigate("/login");
+      return;
+    }
+
     fetchBookings();
   }, []);
 
   const fetchBookings = async () => {
     try {
-      const userId = sessionStorage.getItem("userId");
+      const userId = localStorage.getItem("userId");
+      const token = localStorage.getItem("token");
 
       const response = await axios.get(
-        `http://localhost:5000/api/bookings/${userId}`
+        `http://localhost:5000/api/bookings/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       setBookings(response.data);
+
     } catch (error) {
       console.error(error);
-      alert("Failed to load bookings");
+
+      alert(
+        error.response?.data?.message ||
+        "Failed to load bookings"
+      );
     } finally {
       setLoading(false);
     }
