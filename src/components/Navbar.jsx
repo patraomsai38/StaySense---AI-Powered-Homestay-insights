@@ -1,25 +1,40 @@
-import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
 import { ThemeContext } from "../context/ThemeContext";
 import logo from "../assets/logo.png";
 
 function Navbar() {
   const { darkMode, setDarkMode } = useContext(ThemeContext);
 
-  const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+  const navigate = useNavigate();
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token);
+  }, []);
 
   const handleLogout = () => {
-    sessionStorage.clear();
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    localStorage.removeItem("userId");
+
     alert("Logged out successfully!");
-    window.location.href = "/";
+
+    navigate("/login");
+
+    window.location.reload();
   };
 
   return (
     <nav className="bg-green-700 dark:bg-gray-900 text-white shadow-lg sticky top-0 z-50">
+
       <div className="max-w-7xl mx-auto px-6 py-4 flex flex-wrap justify-between items-center gap-4">
 
         {/* Logo */}
         <div className="flex items-center gap-3">
+
           <img
             src={logo}
             alt="StaySense AI Logo"
@@ -35,9 +50,11 @@ function Navbar() {
               Smart Homestay Insights
             </p>
           </div>
+
         </div>
 
         {/* Navigation */}
+
         <div className="flex flex-wrap gap-4 items-center font-medium">
 
           <Link
@@ -68,14 +85,7 @@ function Navbar() {
             Book Now
           </Link>
 
-          {!isLoggedIn ? (
-            <Link
-              to="/login"
-              className="hover:text-green-200 transition"
-            >
-              Login
-            </Link>
-          ) : (
+          {isLoggedIn ? (
             <>
               <Link
                 to="/my-bookings"
@@ -86,10 +96,26 @@ function Navbar() {
 
               <button
                 onClick={handleLogout}
-                className="hover:text-red-300 transition"
+                className="text-red-200 hover:text-red-400 transition"
               >
                 Logout
               </button>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                className="hover:text-green-200 transition"
+              >
+                Login
+              </Link>
+
+              <Link
+                to="/register"
+                className="hover:text-green-200 transition"
+              >
+                Register
+              </Link>
             </>
           )}
 
@@ -103,6 +129,7 @@ function Navbar() {
         </div>
 
       </div>
+
     </nav>
   );
 }
