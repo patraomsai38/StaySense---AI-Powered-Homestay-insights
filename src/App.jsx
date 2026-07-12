@@ -1,17 +1,22 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Register from "./Pages/Register";
+import LoginSuccess from "./Pages/LoginSuccess";
 import Home from "./Pages/Home";
 import About from "./Pages/About";
 import Dashboard from "./Pages/Dashboard";
 import Login from "./Pages/Login";
-import ComponentsDemo from "./Pages/ComponentsDemo";
+import Register from "./Pages/Register";
 import Booking from "./Pages/Booking";
 import MyBookings from "./Pages/MyBookings";
+import ComponentsDemo from "./Pages/ComponentsDemo";
+
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
     <BrowserRouter>
+
       <Routes>
+
         <Route path="/" element={<Home />} />
 
         <Route path="/about" element={<About />} />
@@ -20,17 +25,38 @@ function App() {
 
         <Route path="/login" element={<Login />} />
 
-        <Route path="/booking" element={<Booking />} />
-
         <Route path="/register" element={<Register />} />
 
-        <Route path="/my-bookings" element={<MyBookings />} />
+        <Route
+          path="/booking"
+          element={
+            <ProtectedRoute>
+              <Booking />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/my-bookings"
+          element={
+            <ProtectedRoute>
+              <MyBookings />
+            </ProtectedRoute>
+          }
+        />
 
         <Route
           path="/components-demo"
           element={<ComponentsDemo />}
         />
+
+        <Route
+  path="/login-success"
+  element={<LoginSuccess />}
+/>
+
       </Routes>
+
     </BrowserRouter>
   );
 }
