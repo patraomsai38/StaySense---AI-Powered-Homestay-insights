@@ -7,8 +7,25 @@ const {
   login,
 } = require("../controllers/authController");
 
-router.post("/register", register);
+const authLimiter = require("../middleware/authLimiter");
 
-router.post("/login", login);
+const {
+  validateRegister,
+  validateLogin,
+} = require("../middleware/authValidation");
+
+router.post(
+  "/register",
+  authLimiter,
+  validateRegister,
+  register
+);
+
+router.post(
+  "/login",
+  authLimiter,
+  validateLogin,
+  login
+);
 
 module.exports = router;
