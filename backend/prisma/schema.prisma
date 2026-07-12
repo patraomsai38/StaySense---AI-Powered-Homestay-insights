@@ -9,8 +9,10 @@ datasource db {
 
 model User {
   id        Int       @id @default(autoincrement())
-  username  String    @unique
-  password  String
+  username  String?
+  email     String    @unique
+  password  String?
+  googleId  String?   @unique
   createdAt DateTime  @default(now())
 
   bookings  Booking[]
@@ -24,20 +26,17 @@ model Homestay {
   rating      Float
   description String?
   image       String?
-
   bookings    Booking[]
 }
 
 model Booking {
-  id          Int      @id @default(autoincrement())
-  checkIn     DateTime
-  checkOut    DateTime
-  guests      Int
-  createdAt   DateTime @default(now())
-
-  userId      Int
-  homestayId  Int
-
-  user         User      @relation(fields: [userId], references: [id])
-  homestay     Homestay  @relation(fields: [homestayId], references: [id])
+  id         Int      @id @default(autoincrement())
+  checkIn    DateTime
+  checkOut   DateTime
+  guests     Int
+  createdAt  DateTime @default(now())
+  userId     Int
+  homestayId Int
+  homestay   Homestay @relation(fields: [homestayId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
 }
