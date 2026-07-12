@@ -8,46 +8,60 @@ import logo from "../assets/logo.png";
 function Login() {
   const navigate = useNavigate();
 
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (!username || !password) {
-    alert("Please enter username and password.");
-    return;
-  }
+    if (!email || !password) {
+      alert("Please enter email and password.");
+      return;
+    }
 
-  try {
-    const response = await axios.post(
-      "http://localhost:5000/api/auth/login",
-      {
-        username,
-        password,
-      }
-    );
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/login",
+        {
+          email,
+          password,
+        }
+      );
 
-    const user = response.data.user;
+      // Save JWT Token
+      localStorage.setItem("token", response.data.token);
 
-    sessionStorage.setItem("isLoggedIn", "true");
-    sessionStorage.setItem("userId", user.id);
-    sessionStorage.setItem("username", user.username);
+      // Save User
+      localStorage.setItem(
+        "user",
+        JSON.stringify(response.data.user)
+      );
 
-    alert("Login Successful!");
+      // Save User ID
+      localStorage.setItem(
+        "userId",
+        response.data.user.id
+      );
 
-    navigate("/booking");
-  } catch (error) {
-    alert(
-      error.response?.data?.message || "Login Failed"
-    );
-  }
-};
+      alert("Login Successful!");
+
+      navigate("/booking");
+
+    } catch (error) {
+      alert(
+        error.response?.data?.message ||
+        "Login Failed"
+      );
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-green-100 via-green-50 to-green-300 dark:from-gray-900 dark:via-gray-800 dark:to-black dark:text-white transition-all duration-300">
+
       <Navbar />
 
       <main className="flex-grow flex items-center justify-center p-6">
+
         <div className="bg-white/95 dark:bg-gray-800 backdrop-blur-md shadow-2xl rounded-2xl p-8 w-full max-w-md border border-green-100 dark:border-gray-700">
 
           {/* Logo */}
@@ -71,17 +85,17 @@ function Login() {
           {/* Login Form */}
           <form onSubmit={handleLogin} className="space-y-4">
 
-            {/* Username */}
+            {/* Email */}
             <div>
               <label className="block mb-2 font-medium">
-                Username
+                Email
               </label>
 
               <input
-                type="text"
-                placeholder="Enter username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="w-full border rounded-lg p-3 bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500"
               />
             </div>
@@ -119,6 +133,16 @@ function Login() {
               Login
             </button>
 
+            <button
+  onClick={() =>
+    window.location.href =
+      "http://localhost:5000/auth/google"
+  }
+  className="w-full mt-3 border border-red-500 text-red-500 py-3 rounded-lg hover:bg-red-500 hover:text-white transition"
+>
+  Sign in with Google
+</button>
+
           </form>
 
           {/* Register Section */}
@@ -129,19 +153,21 @@ function Login() {
             </p>
 
             <button
-type="button"
-onClick={() => navigate("/register")}
-className="mt-3 w-full border-2 border-green-700 text-green-700 dark:text-green-400 dark:border-green-400 py-3 px-4 rounded-lg font-semibold text-sm md:text-base hover:bg-green-700 hover:text-white transition duration-300"
->
-Create New Account
-</button>
+              type="button"
+              onClick={() => navigate("/register")}
+              className="mt-3 w-full border-2 border-green-700 text-green-700 dark:text-green-400 dark:border-green-400 py-3 px-4 rounded-lg font-semibold text-sm md:text-base hover:bg-green-700 hover:text-white transition duration-300"
+            >
+              Create New Account
+            </button>
 
           </div>
 
         </div>
+
       </main>
 
       <Footer />
+
     </div>
   );
 }
