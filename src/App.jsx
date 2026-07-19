@@ -8,6 +8,7 @@ import Register from "./Pages/Register";
 import Booking from "./Pages/Booking";
 import MyBookings from "./Pages/MyBookings";
 import ComponentsDemo from "./Pages/ComponentsDemo";
+import AIAssistant from "./Pages/AIAssistant";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -44,6 +45,10 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+    path="/ai"
+    element={<AIAssistant />}
+/>
 
         <Route
           path="/components-demo"

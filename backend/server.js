@@ -1,25 +1,40 @@
-const bookingRoutes = require("./routes/booking");
-const authRoutes = require("./routes/auth");
-const googleAuthRoutes = require("./routes/googleAuth");
+require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
 const session = require("express-session");
 const passport = require("passport");
 
 require("./config/passport");
-require("dotenv").config();
 
 const prisma = require("./prismaClient");
 
+// Routes
+const authRoutes = require("./routes/auth");
+const googleAuthRoutes = require("./routes/googleAuth");
+const bookingRoutes = require("./routes/booking");
+const aiRoutes = require("./routes/ai");
+const homestayRoutes = require("./routes/homestays");
+const locationRoutes = require("./routes/location.routes");
+
 const app = express();
 
+console.log("Geoapify Key:", process.env.GEOAPIFY_API_KEY);
+
+/* ===========================
+   MIDDLEWARE
+=========================== */
+
+// CORS MUST come before routes
 app.use(
   cors({
     origin: "http://localhost:5173",
     credentials: true,
   })
 );
+
 app.use(express.json());
+
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -30,13 +45,22 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+/* ===========================
+   ROUTES
+=========================== */
+
 app.use("/api/auth", authRoutes);
 app.use("/auth", googleAuthRoutes);
 app.use("/api/bookings", bookingRoutes);
+app.use("/api/ai", aiRoutes);
+app.use("/api/homestays", homestayRoutes);
+app.use("/api/location", locationRoutes);
 
 /* ===========================
    GET ALL HOMESTAYS
 =========================== */
+
 app.get("/api/homestays", async (req, res) => {
   try {
     const homestays = await prisma.homestay.findMany({
@@ -58,6 +82,7 @@ app.get("/api/homestays", async (req, res) => {
 /* ===========================
    GET HOMESTAY BY ID
 =========================== */
+
 app.get("/api/homestays/:id", async (req, res) => {
   try {
     const stay = await prisma.homestay.findUnique({
@@ -85,6 +110,7 @@ app.get("/api/homestays/:id", async (req, res) => {
 /* ===========================
    CREATE HOMESTAY
 =========================== */
+
 app.post("/api/homestays", async (req, res) => {
   try {
     const {
@@ -120,6 +146,7 @@ app.post("/api/homestays", async (req, res) => {
 /* ===========================
    UPDATE HOMESTAY
 =========================== */
+
 app.put("/api/homestays/:id", async (req, res) => {
   try {
     const {
@@ -158,6 +185,7 @@ app.put("/api/homestays/:id", async (req, res) => {
 /* ===========================
    DELETE HOMESTAY
 =========================== */
+
 app.delete("/api/homestays/:id", async (req, res) => {
   try {
     await prisma.homestay.delete({
@@ -177,8 +205,9 @@ app.delete("/api/homestays/:id", async (req, res) => {
 });
 
 /* ===========================
-   SEARCH BY LOCATION
+   SEARCH HOMESTAY BY LOCATION
 =========================== */
+
 app.get("/api/homestays/search/location/:location", async (req, res) => {
   try {
     const homestays = await prisma.homestay.findMany({
@@ -206,6 +235,7 @@ app.get("/api/homestays/search/location/:location", async (req, res) => {
 /* ===========================
    ERROR HANDLER
 =========================== */
+
 app.use((err, req, res, next) => {
   console.error(err);
 
