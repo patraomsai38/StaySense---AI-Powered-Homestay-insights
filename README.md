@@ -146,12 +146,14 @@ The platform aims to:
 
 ---
 
-## AI Technologies (Planned)
+## AI Technologies
 
-* Natural Language Processing (NLP)
-* Sentiment Analysis
-* Recommendation Engine
-* AI Chatbot Integration
+- Google Gemini AI
+- Prompt Engineering
+- AI Chat Assistant
+- Natural Language Processing (NLP)
+- Personalized Travel Recommendations
+- AI-powered User Assistance
 
 ---
 
@@ -488,6 +490,173 @@ The following ER diagram illustrates the database structure and relationships us
 ![Database Schema](./docs/W5_SchemaDiagram_[TBI-26101289].png)
 
 ---
+# 📅 Week 6 Deliverables Completed
+
+## 🔐 User Authentication & Authorization
+
+Implemented a secure authentication and authorization system using **JWT (JSON Web Tokens)** and **bcrypt**.
+
+### Completed:
+
+- ✅ User Registration
+- ✅ User Login
+- ✅ Password Hashing using bcrypt
+- ✅ JWT Token Generation
+- ✅ JWT Verification Middleware
+- ✅ Protected Backend Routes
+- ✅ Secure Authentication Flow
+- ✅ Environment Variable Configuration for Secret Keys
+
+---
+
+## 👤 User Management
+
+Developed user account management features integrated with PostgreSQL.
+
+Completed:
+
+- ✅ Register New User
+- ✅ Authenticate Existing User
+- ✅ Store User Information in PostgreSQL
+- ✅ Retrieve Authenticated User Details
+- ✅ Persistent User Sessions
+
+---
+
+## 🏡 Booking Management System
+
+Implemented a complete booking workflow for homestays.
+
+Features:
+
+- ✅ Book Homestays
+- ✅ Booking Confirmation
+- ✅ Store Booking Details in Database
+- ✅ View My Bookings
+- ✅ Cancel Booking
+- ✅ Booking Status Management
+- ✅ Booking History Persistence
+
+---
+
+## 🗄 Database Enhancements
+
+Extended the database schema using Prisma ORM.
+
+Completed:
+
+- ✅ User Model
+- ✅ Booking Model
+- ✅ User-Booking Relationships
+- ✅ Prisma Schema Updates
+- ✅ Database Migration
+- ✅ Prisma Client Regeneration
+
+---
+
+## 🔒 Security Enhancements
+
+Implemented security best practices.
+
+Completed:
+
+- ✅ Password Hashing with bcrypt
+- ✅ JWT-based Authentication
+- ✅ Protected API Endpoints
+- ✅ Authentication Middleware
+- ✅ Secure Environment Variables
+- ✅ Request Validation
+
+---
+
+# 📅 Week 7 Deliverables Completed
+
+## 🤖 Google Gemini AI Integration
+
+Integrated Google's **Gemini AI API** to provide intelligent assistance within the StaySense platform.
+
+Completed:
+
+- ✅ Gemini AI API Integration
+- ✅ AI Chat Backend Service
+- ✅ Prompt Engineering
+- ✅ AI Response Generation
+- ✅ Error Handling for AI Requests
+
+---
+
+## 💬 AI Travel Assistant
+
+Developed an interactive AI-powered travel assistant.
+
+Features:
+
+- ✅ Floating AI Assistant Button
+- ✅ Interactive Chat Interface
+- ✅ Personalized Travel Recommendations
+- ✅ Homestay Guidance
+- ✅ User Query Assistance
+- ✅ Real-time AI Responses
+
+---
+
+## 📍 Geoapify Maps & Location Services
+
+Integrated Geoapify APIs for location-based services.
+
+Completed:
+
+- ✅ Nearby Homestay Discovery
+- ✅ Interactive Map Integration
+- ✅ Location Search
+- ✅ Reverse Geocoding
+- ✅ Distance-based Recommendations
+
+---
+
+## 🛠 Backend Enhancements
+
+Improved backend architecture and API functionality.
+
+Completed:
+
+- ✅ AI Routes
+- ✅ Location Routes
+- ✅ Enhanced Booking APIs
+- ✅ Updated Prisma Schema
+- ✅ Improved Error Handling
+- ✅ REST API Enhancements
+
+---
+
+## 📄 Documentation & Testing
+
+Prepared project documentation and testing artifacts.
+
+Completed:
+
+- ✅ PROMPTS.md
+- ✅ AI Prompt Testing
+- ✅ Week 7 Demo PDF
+- ✅ API Testing using Postman
+- ✅ Environment Variable Documentation
+
+---
+
+## 🚀 Week 7 Highlights
+
+Successfully enhanced StaySense AI with advanced AI and location-based capabilities.
+
+Completed:
+
+- ✅ Google Gemini AI Chat Assistant
+- ✅ Geoapify Maps Integration
+- ✅ Nearby Homestay Search
+- ✅ Improved Booking Management
+- ✅ Secure API Key Management using .env
+- ✅ Professional Git Commit History
+- ✅ Peer Code Reviews
+- ✅ Week 7 Deliverables Successfully Completed
 
 ## ⚙ Set Up the Database
 
@@ -698,30 +867,27 @@ http://localhost:5000/
 
 ## 🚧 In Progress
 
-* User Authentication System (JWT)
-* AI Review Analysis Engine
-* AI-powered Travel Recommendation System
-* AI Chatbot Integration
-* Live Weather API Integration
-* Payment Gateway Integration
-* Booking History & User Profiles
-* Admin Dashboard
+- Payment Gateway Integration
+- Admin Dashboard
+- Review Sentiment Visualization
+- Personalized Recommendation Engine
+- Booking History Analytics
+- Email Notifications
 
 ---
 
 # 🔮 Future Enhancements
 
-* JWT Authentication
-* AI Travel Recommendation Engine
-* Review Sentiment Visualization
-* Real-Time Notifications
-* Booking History
-* Email Notifications
-* Admin Dashboard
-* AI-powered Chatbot using LLMs
-* Google Maps Integration
-* Payment Gateway
-* Review Recommendation Engine
+- AI-based Review Sentiment Dashboard
+- Personalized Travel Itinerary Generator
+- Secure Payment Gateway Integration
+- Google Maps Navigation
+- Email & SMS Notifications
+- Admin Analytics Dashboard
+- Booking History & Reports
+- AI Recommendation Engine
+- Real-time Availability Tracking
+- Multi-language Support
 
 ---
 
