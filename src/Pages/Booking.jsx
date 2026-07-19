@@ -1,21 +1,35 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
+
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import axios from "axios";
+
+import { getNearbyHomestays } from "../services/homestayService";
+
+const LOCATION_API = "http://localhost:5000/api/location/search";
+const BOOKING_API = "http://localhost:5000/api/bookings";
 
 function Booking() {
   const navigate = useNavigate();
 
-  const [homestays, setHomestays] = useState([]);
+  // ==========================
+  // States
+  // ==========================
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  const [homestays, setHomestays] = useState([]);
+  const [filteredHomestays, setFilteredHomestays] = useState([]);
+
+  const [searchCity, setSearchCity] = useState("");
   const [budget, setBudget] = useState("all");
-  const [rating, setRating] = useState("all");
-  const [search, setSearch] = useState("");
 
   const [selectedStay, setSelectedStay] = useState(null);
+
+  const [bookingSuccess, setBookingSuccess] = useState(false);
+
   const [confirmedStay, setConfirmedStay] = useState(null);
 
   const [bookingData, setBookingData] = useState({
@@ -25,122 +39,255 @@ function Booking() {
     guests: 1,
   });
 
-  const [bookingSuccess, setBookingSuccess] = useState(false);
+  // ==========================
+  // Login Protection
+  // ==========================
 
-  // Protect Booking Page
   useEffect(() => {
-  const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
-  if (!token) {
-    alert("Please login first.");
-    navigate("/login");
-  }
-}, [navigate]);
+    if (!token) {
+      alert("Please login first.");
+      navigate("/login");
+      return;
+    }
 
-  // Fetch Homestays
-  useEffect(() => {
-    fetch("http://localhost:5000/api/homestays")
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Unable to fetch homestays");
+    getCurrentLocation();
+  }, [navigate]);
+
+  // ==========================
+  // Current Location
+  // ==========================
+
+  const getCurrentLocation = () => {
+    setLoading(true);
+    setError("");
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        try {
+          const { latitude, longitude } = position.coords;
+
+          const data = await getNearbyHomestays(
+            latitude,
+            longitude
+          );
+
+          const stays = data.map((stay) => ({
+            ...stay,
+            estimatedPrice:
+              Math.floor(Math.random() * 2500) + 1500,
+            image:
+              "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200",
+          }));
+
+          setHomestays(stays);
+          setFilteredHomestays(stays);
+        } catch (err) {
+          console.error(err);
+          setError("Unable to fetch nearby homestays.");
+        } finally {
+          setLoading(false);
         }
-        return res.json();
-      })
-      .then((data) => {
-        setHomestays(data);
+      },
+      () => {
         setLoading(false);
-      })
-      .catch(() => {
-        setError("Failed to connect to backend.");
-        setLoading(false);
-      });
-  }, []);
+        setError("Please allow location access.");
+      }
+    );
+  };
 
-  // Filters
-  const filteredHomestays = homestays.filter((stay) => {
-    const budgetMatch =
-      budget === "all"
-        ? true
-        : budget === "2000"
-        ? stay.price <= 2000
-        : budget === "2500"
-        ? stay.price <= 2500
-        : stay.price > 2500;
+  // ==========================
+  // Search Location
+  // ==========================
 
-    const ratingMatch =
-      rating === "all"
-        ? true
-        : stay.rating >= Number(rating);
+  const searchLocation = async () => {
+    if (!searchCity.trim()) return;
 
-    const searchMatch = stay.location
-      .toLowerCase()
-      .includes(search.toLowerCase());
+    try {
+      setLoading(true);
+      setError("");
 
-    return budgetMatch && ratingMatch && searchMatch;
-  });
+      const response = await axios.get(
+        `${LOCATION_API}?city=${searchCity}`
+      );
 
-  // Book Now
+      const { lat, lon } = response.data;
+
+      const data = await getNearbyHomestays(lat, lon);
+
+      const stays = data.map((stay) => ({
+        ...stay,
+        estimatedPrice:
+          Math.floor(Math.random() * 2500) + 1500,
+        image:
+          "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200",
+      }));
+
+      setHomestays(stays);
+      setFilteredHomestays(stays);
+    } catch (err) {
+      console.error(err);
+      setError("Location not found.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // ==========================
+  // Budget Filter
+  // ==========================
+
+  useEffect(() => {
+    let result = [...homestays];
+
+    if (budget === "2000") {
+      result = result.filter(
+        (stay) => stay.estimatedPrice <= 2000
+      );
+    } else if (budget === "3000") {
+      result = result.filter(
+        (stay) => stay.estimatedPrice <= 3000
+      );
+    } else if (budget === "4000") {
+      result = result.filter(
+        (stay) => stay.estimatedPrice > 3000
+      );
+    }
+
+    setFilteredHomestays(result);
+  }, [budget, homestays]);
+
+  // ==========================
+  // Google Maps
+  // ==========================
+
+  const openDirections = (lat, lon) => {
+    window.open(
+      `https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}`,
+      "_blank"
+    );
+  };
+
+  // ==========================
+  // Open Booking Modal
+  // ==========================
+
   const handleBookNow = (stay) => {
     setSelectedStay(stay);
 
+    const user =
+      JSON.parse(localStorage.getItem("user")) || {};
+
     setBookingData({
-      name: JSON.parse(localStorage.getItem("user"))?.username || "",
+      name: user.username || "",
       checkIn: "",
       checkOut: "",
       guests: 1,
     });
   };
-
+    // ==========================
   // Confirm Booking
+  // ==========================
+
   const handleBooking = async () => {
     if (
-      bookingData.name === "" ||
-      bookingData.checkIn === "" ||
-      bookingData.checkOut === ""
+      !bookingData.name ||
+      !bookingData.checkIn ||
+      !bookingData.checkOut
     ) {
       alert("Please fill all booking details.");
       return;
     }
 
+    if (
+      new Date(bookingData.checkOut) <=
+      new Date(bookingData.checkIn)
+    ) {
+      alert("Check-out date must be after check-in date.");
+      return;
+    }
+
     try {
+      const token = localStorage.getItem("token");
       const userId = localStorage.getItem("userId");
 
-const token = localStorage.getItem("token");
-      if (!userId) {
+      if (!token || !userId) {
         alert("Please login first.");
         navigate("/login");
         return;
       }
 
-      await axios.post(
-  "http://localhost:5000/api/bookings",
-  {
-    userId: Number(userId),
-    homestayId: Number(selectedStay.id),
-    checkIn: bookingData.checkIn,
-    checkOut: bookingData.checkOut,
-    guests: Number(bookingData.guests),
-  },
-  {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  }
-);
+      const bookingPayload = {
+        userId: Number(userId),
 
-      setConfirmedStay(selectedStay);
-      setSelectedStay(null);
+        homestayName:
+          selectedStay?.properties?.name || "Unnamed Homestay",
+
+        address:
+          selectedStay?.properties?.formatted ||
+          "Unknown Address",
+
+        latitude: selectedStay?.properties?.lat,
+
+        longitude: selectedStay?.properties?.lon,
+
+        estimatedPrice:
+          selectedStay?.estimatedPrice || 0,
+
+        category:
+          selectedStay?.properties?.categories?.[0]
+            ?.replace("accommodation.", "")
+            ?.replaceAll("_", " ") || "Homestay",
+
+        image: selectedStay?.image,
+
+        checkIn: bookingData.checkIn,
+
+        checkOut: bookingData.checkOut,
+
+        guests: Number(bookingData.guests),
+      };
+
+      const response = await axios.post(
+        BOOKING_API,
+        bookingPayload,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setConfirmedStay(response.data.booking);
+
       setBookingSuccess(true);
+
+      setSelectedStay(null);
+
+      const user =
+        JSON.parse(localStorage.getItem("user")) || {};
+
+      setBookingData({
+        name: user.username || "",
+        checkIn: "",
+        checkOut: "",
+        guests: 1,
+      });
 
     } catch (error) {
       console.error(error);
 
       alert(
         error.response?.data?.message ||
-          "Booking Failed"
+          "Booking failed."
       );
     }
   };
+
+  // ==========================
+  // Start JSX
+  // ==========================
 
   return (
     <div className="min-h-screen bg-green-50 dark:bg-gray-900 dark:text-white transition-all duration-300">
@@ -149,283 +296,447 @@ const token = localStorage.getItem("token");
 
       <main className="max-w-7xl mx-auto px-6 py-10">
 
-        <h1 className="text-4xl font-bold text-center text-green-700 dark:text-green-400">
-          Explore Homestays
-        </h1>
+        {/* Heading */}
 
-        <p className="text-center text-gray-600 dark:text-gray-300 mt-3 mb-10">
-          Find the perfect stay according to your budget,
-          reviews and location.
-        </p>
+        <div className="text-center mb-10">
 
-        {/* Filters */}
+          <h1 className="text-5xl font-bold text-green-700 dark:text-green-400">
+            Discover Nearby Homestays
+          </h1>
 
-        <div className="bg-white dark:bg-gray-800 shadow-lg rounded-xl p-6 mb-10">
+          <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
+            Find beautiful homestays near your current location
+            or search anywhere across India.
+          </p>
 
-          <h2 className="text-2xl font-bold mb-5">
-            Search & Filter
-          </h2>
+        </div>
 
-          <div className="grid md:grid-cols-3 gap-4">
+        {/* Search Section */}
+
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mb-10">
+
+          <div className="grid lg:grid-cols-4 gap-4">
 
             <input
               type="text"
-              placeholder="Search Location..."
-              value={search}
+              placeholder="Search city (Goa, Mussoorie...)"
+              value={searchCity}
               onChange={(e) =>
-                setSearch(e.target.value)
+                setSearchCity(e.target.value)
               }
-              className="border rounded-lg p-3 dark:bg-gray-700"
+              className="border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-600"
             />
+
+            <button
+              onClick={searchLocation}
+              className="bg-green-700 hover:bg-green-800 text-white rounded-lg py-3 font-semibold"
+            >
+              🔍 Search
+            </button>
 
             <select
               value={budget}
               onChange={(e) =>
                 setBudget(e.target.value)
               }
-              className="border rounded-lg p-3 dark:bg-gray-700"
+              className="border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 dark:bg-gray-700"
             >
               <option value="all">All Budgets</option>
-              <option value="2000">
-                Under ₹2000
-              </option>
-              <option value="2500">
-                Under ₹2500
-              </option>
-              <option value="3000">
-                Above ₹2500
-              </option>
+              <option value="2000">Under ₹2000</option>
+              <option value="3000">Under ₹3000</option>
+              <option value="4000">Above ₹3000</option>
             </select>
 
-            <select
-              value={rating}
-              onChange={(e) =>
-                setRating(e.target.value)
-              }
-              className="border rounded-lg p-3 dark:bg-gray-700"
+            <button
+              onClick={getCurrentLocation}
+              className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg py-3 font-semibold"
             >
-              <option value="all">
-                All Ratings
-              </option>
-              <option value="4.5">
-                4.5+
-              </option>
-              <option value="4.7">
-                4.7+
-              </option>
-              <option value="4.9">
-                4.9+
-              </option>
-            </select>
+              📍 Current Location
+            </button>
 
           </div>
 
         </div>
+                {/* ==========================
+            Loading
+        ========================== */}
 
         {loading && (
-          <h2 className="text-center text-xl font-semibold">
-            Loading Homestays...
-          </h2>
+          <div className="flex flex-col items-center justify-center py-24">
+            <div className="animate-spin rounded-full h-16 w-16 border-4 border-green-600 border-t-transparent"></div>
+
+            <p className="mt-6 text-xl font-semibold">
+              Finding nearby homestays...
+            </p>
+          </div>
         )}
 
-        {error && (
-          <h2 className="text-center text-red-600 font-semibold">
-            {error}
-          </h2>
+        {/* ==========================
+            Error
+        ========================== */}
+
+        {!loading && error && (
+          <div className="bg-red-100 border border-red-400 text-red-700 rounded-xl p-6 text-center">
+            <h2 className="text-2xl font-bold">
+              {error}
+            </h2>
+          </div>
         )}
 
-        <div className="grid md:grid-cols-3 gap-8">
+        {/* ==========================
+            No Results
+        ========================== */}
 
-          {filteredHomestays.map((stay) => (
+        {!loading &&
+          !error &&
+          filteredHomestays.length === 0 && (
+            <div className="text-center py-20">
 
-            <div
-              key={stay.id}
-              className="bg-white dark:bg-gray-800 rounded-xl shadow-xl p-6 hover:scale-105 transition"
-            >
-
-              <h2 className="text-2xl font-bold">
-                🏡 {stay.name}
+              <h2 className="text-3xl font-bold">
+                No homestays found
               </h2>
 
-              <p className="mt-2">
-                📍 {stay.location}
+              <p className="mt-3 text-gray-600 dark:text-gray-400">
+                Try searching another destination.
               </p>
 
-              <p className="mt-2 text-green-700 font-bold">
-                ⭐ {stay.rating}
-              </p>
+            </div>
+          )}
 
-              <p className="text-xl font-bold mt-2">
-                ₹{stay.price}/night
-              </p>
+        {/* ==========================
+            Homestay Cards
+        ========================== */}
 
-              <button
-                onClick={() => handleBookNow(stay)}
-                className="w-full mt-5 bg-green-700 text-white py-3 rounded-lg hover:bg-green-800 transition"
-              >
-                Book Now
-              </button>
+        {!loading &&
+          !error &&
+          filteredHomestays.length > 0 && (
+
+            <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
+
+              {filteredHomestays.map((stay, index) => {
+
+                const name =
+                  stay.properties?.name ||
+                  "Unnamed Homestay";
+
+                const address =
+                  stay.properties?.formatted ||
+                  "Address unavailable";
+
+                const category =
+                  stay.properties?.categories?.[0]
+                    ?.replace("accommodation.", "")
+                    ?.replaceAll("_", " ") ||
+                  "Homestay";
+
+                return (
+
+                  <div
+                    key={stay.properties?.place_id || index}
+                    className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:-translate-y-2 transition duration-300"
+                  >
+
+                    <img
+                      src={stay.image}
+                      alt={name}
+                      className="w-full h-56 object-cover"
+                    />
+
+                    <div className="p-6">
+
+                      <h2 className="text-2xl font-bold mb-2">
+                        {name}
+                      </h2>
+
+                      <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">
+                        📍 {address}
+                      </p>
+
+                      <span className="inline-block bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium mb-4">
+                        {category}
+                      </span>
+
+                      <div className="flex justify-between items-center mb-5">
+
+                        <div>
+
+                          <p className="text-sm text-gray-500">
+                            Estimated Price
+                          </p>
+
+                          <h3 className="text-2xl font-bold text-green-700">
+                            ₹{stay.estimatedPrice}
+                          </h3>
+
+                        </div>
+
+                        <div className="text-right">
+
+                          <p className="text-yellow-500 font-semibold">
+                            ⭐ 4.5
+                          </p>
+
+                          <p className="text-sm text-gray-500">
+                            Popular Stay
+                          </p>
+
+                        </div>
+
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-3">
+
+                        <button
+                          onClick={() =>
+                            openDirections(
+                              stay.properties.lat,
+                              stay.properties.lon
+                            )
+                          }
+                          className="bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition"
+                        >
+                          📍 Directions
+                        </button>
+
+                        <button
+                          onClick={() => handleBookNow(stay)}
+                          className="bg-green-700 hover:bg-green-800 text-white py-3 rounded-lg font-semibold transition"
+                        >
+                          Book Now
+                        </button>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                );
+
+              })}
 
             </div>
 
-          ))}
-
-        </div>
-                {/* Booking Modal */}
+          )}        {/* ==========================
+            Booking Modal
+        ========================== */}
 
         {selectedStay && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4">
 
-            <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-2xl w-full max-w-md">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-lg p-8">
 
-              <h2 className="text-3xl font-bold text-green-700 mb-6">
-                Book {selectedStay.name}
+              <h2 className="text-3xl font-bold text-center text-green-700 dark:text-green-400 mb-6">
+                Book Your Stay
               </h2>
 
-              <input
-                type="text"
-                value={bookingData.name}
-                readOnly
-                className="w-full border rounded-lg p-3 mb-4 bg-gray-100 dark:bg-gray-700"
-              />
+              <div className="space-y-4">
 
-              <label className="font-semibold">
-                Check In
-              </label>
+                <div>
+                  <label className="block font-semibold mb-2">
+                    Guest Name
+                  </label>
 
-              <input
-                type="date"
-                className="w-full border rounded-lg p-3 mb-4 dark:bg-gray-700"
-                value={bookingData.checkIn}
-                onChange={(e) =>
-                  setBookingData({
-                    ...bookingData,
-                    checkIn: e.target.value,
-                  })
-                }
-              />
+                  <input
+                    type="text"
+                    value={bookingData.name}
+                    onChange={(e) =>
+                      setBookingData({
+                        ...bookingData,
+                        name: e.target.value,
+                      })
+                    }
+                    className="w-full border rounded-lg px-4 py-3 dark:bg-gray-700 dark:border-gray-600"
+                  />
+                </div>
 
-              <label className="font-semibold">
-                Check Out
-              </label>
+                <div className="grid grid-cols-2 gap-4">
 
-              <input
-                type="date"
-                className="w-full border rounded-lg p-3 mb-4 dark:bg-gray-700"
-                value={bookingData.checkOut}
-                onChange={(e) =>
-                  setBookingData({
-                    ...bookingData,
-                    checkOut: e.target.value,
-                  })
-                }
-              />
+                  <div>
+                    <label className="block font-semibold mb-2">
+                      Check In
+                    </label>
 
-              <label className="font-semibold">
-                Number of Guests
-              </label>
+                    <input
+                      type="date"
+                      value={bookingData.checkIn}
+                      onChange={(e) =>
+                        setBookingData({
+                          ...bookingData,
+                          checkIn: e.target.value,
+                        })
+                      }
+                      className="w-full border rounded-lg px-4 py-3 dark:bg-gray-700 dark:border-gray-600"
+                    />
+                  </div>
 
-              <input
-                type="number"
-                min="1"
-                className="w-full border rounded-lg p-3 mb-6 dark:bg-gray-700"
-                value={bookingData.guests}
-                onChange={(e) =>
-                  setBookingData({
-                    ...bookingData,
-                    guests: e.target.value,
-                  })
-                }
-              />
+                  <div>
+                    <label className="block font-semibold mb-2">
+                      Check Out
+                    </label>
 
-              <div className="flex gap-4">
+                    <input
+                      type="date"
+                      value={bookingData.checkOut}
+                      onChange={(e) =>
+                        setBookingData({
+                          ...bookingData,
+                          checkOut: e.target.value,
+                        })
+                      }
+                      className="w-full border rounded-lg px-4 py-3 dark:bg-gray-700 dark:border-gray-600"
+                    />
+                  </div>
 
-                <button
-                  onClick={handleBooking}
-                  className="flex-1 bg-green-700 text-white py-3 rounded-lg hover:bg-green-800 transition"
-                >
-                  Confirm Booking
-                </button>
+                </div>
 
-                <button
-                  onClick={() => setSelectedStay(null)}
-                  className="flex-1 border border-gray-400 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
-                >
-                  Cancel
-                </button>
+                <div>
+
+                  <label className="block font-semibold mb-2">
+                    Guests
+                  </label>
+
+                  <input
+                    type="number"
+                    min="1"
+                    max="10"
+                    value={bookingData.guests}
+                    onChange={(e) =>
+                      setBookingData({
+                        ...bookingData,
+                        guests: e.target.value,
+                      })
+                    }
+                    className="w-full border rounded-lg px-4 py-3 dark:bg-gray-700 dark:border-gray-600"
+                  />
+
+                </div>
+
+                <div className="bg-green-50 dark:bg-gray-700 rounded-xl p-5 mt-6">
+
+                  <h3 className="font-bold text-xl mb-3">
+                    Booking Summary
+                  </h3>
+
+                  <p>
+                    <strong>Homestay:</strong>{" "}
+                    {selectedStay.properties?.name}
+                  </p>
+
+                  <p>
+                    <strong>Price:</strong> ₹
+                    {selectedStay.estimatedPrice} / night
+                  </p>
+
+                  <p>
+                    <strong>Category:</strong>{" "}
+                    {selectedStay.properties?.categories?.[0]
+                      ?.replace("accommodation.", "")
+                      ?.replaceAll("_", " ")}
+                  </p>
+
+                </div>
+
+                <div className="grid grid-cols-2 gap-4 mt-8">
+
+                  <button
+                    onClick={() => setSelectedStay(null)}
+                    className="bg-gray-500 hover:bg-gray-600 text-white py-3 rounded-lg font-semibold"
+                  >
+                    Cancel
+                  </button>
+
+                  <button
+                    onClick={handleBooking}
+                    className="bg-green-700 hover:bg-green-800 text-white py-3 rounded-lg font-semibold"
+                  >
+                    Confirm Booking
+                  </button>
+
+                </div>
 
               </div>
 
             </div>
 
           </div>
-        )}
-                {/* Booking Success Popup */}
+        )}        {/* ==========================
+            Booking Success Popup
+        ========================== */}
 
         {bookingSuccess && confirmedStay && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4">
 
-            <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-2xl max-w-md w-full text-center">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-md p-8 text-center">
 
-              <h2 className="text-3xl font-bold text-green-700 mb-5">
-                🎉 Booking Confirmed!
+              <div className="text-6xl mb-4">🎉</div>
+
+              <h2 className="text-3xl font-bold text-green-700 dark:text-green-400 mb-4">
+                Booking Confirmed!
               </h2>
 
-              <p className="text-lg mb-4">
-                Thank you,
-                <span className="font-bold"> {bookingData.name}</span>
+              <p className="text-gray-600 dark:text-gray-300 mb-6">
+                Your booking has been successfully confirmed.
               </p>
 
-              <div className="bg-green-100 dark:bg-green-900 rounded-lg p-5 text-left mb-6">
+              <div className="bg-green-50 dark:bg-gray-700 rounded-xl p-5 text-left space-y-2">
 
-                <p className="mb-2">
-                  <strong>🏡 Homestay:</strong>{" "}
-                  {confirmedStay.name}
-                </p>
-
-                <p className="mb-2">
-                  <strong>📍 Location:</strong>{" "}
-                  {confirmedStay.location}
-                </p>
-
-                <p className="mb-2">
-                  <strong>💰 Price:</strong> ₹
-                  {confirmedStay.price}/night
-                </p>
-
-                <p className="mb-2">
-                  <strong>📅 Check In:</strong>{" "}
-                  {bookingData.checkIn}
-                </p>
-
-                <p className="mb-2">
-                  <strong>📅 Check Out:</strong>{" "}
-                  {bookingData.checkOut}
+                <p>
+                  <strong>Homestay:</strong>{" "}
+                  {confirmedStay.homestayName}
                 </p>
 
                 <p>
-                  <strong>👥 Guests:</strong>{" "}
-                  {bookingData.guests}
+                  <strong>Address:</strong>{" "}
+                  {confirmedStay.address}
+                </p>
+
+                <p>
+                  <strong>Guests:</strong>{" "}
+                  {confirmedStay.guests}
+                </p>
+
+                <p>
+                  <strong>Check In:</strong>{" "}
+                  {new Date(
+                    confirmedStay.checkIn
+                  ).toLocaleDateString()}
+                </p>
+
+                <p>
+                  <strong>Check Out:</strong>{" "}
+                  {new Date(
+                    confirmedStay.checkOut
+                  ).toLocaleDateString()}
+                </p>
+
+                <p>
+                  <strong>Price:</strong> ₹
+                  {confirmedStay.estimatedPrice}
                 </p>
 
               </div>
 
-              <button
-                onClick={() => {
-                  setBookingSuccess(false);
-                  setConfirmedStay(null);
+              <div className="grid grid-cols-2 gap-4 mt-8">
 
-                  setBookingData({
-                    name: JSON.parse(localStorage.getItem("user"))?.username || "",
-                    checkIn: "",
-                    checkOut: "",
-                    guests: 1,
-                  });
-                }}
-                className="bg-green-700 hover:bg-green-800 text-white px-6 py-3 rounded-lg transition"
-              >
-                Close
-              </button>
+                <button
+                  onClick={() => {
+                    setBookingSuccess(false);
+                    setConfirmedStay(null);
+                  }}
+                  className="bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold"
+                >
+                  Continue
+                </button>
+
+                <button
+                  onClick={() => navigate("/mybookings")}
+                  className="bg-green-700 hover:bg-green-800 text-white py-3 rounded-lg font-semibold"
+                >
+                  My Bookings
+                </button>
+
+              </div>
 
             </div>
 
@@ -441,3 +752,4 @@ const token = localStorage.getItem("token");
 }
 
 export default Booking;
+  
