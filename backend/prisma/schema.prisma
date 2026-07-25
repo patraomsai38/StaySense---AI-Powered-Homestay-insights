@@ -16,6 +16,7 @@ model User {
   createdAt DateTime  @default(now())
 
   bookings  Booking[]
+  reviews   Review[]
 }
 
 model Homestay {
@@ -26,6 +27,7 @@ model Homestay {
   rating      Float
   description String?
   image       String?
+
   bookings    Booking[]
 }
 
@@ -47,17 +49,40 @@ model Booking {
   homestay   Homestay? @relation(fields: [homestayId], references: [id])
 
   // Geoapify Data
-  homestayName String
-  address      String
+  homestayName   String
+  address        String
 
-  latitude  Float
-  longitude Float
+  latitude       Float
+  longitude      Float
 
   estimatedPrice Int
 
-  category String?
+  category       String?
+  image          String?
 
-  image String?
+  status         String @default("Confirmed")
 
-  status String @default("Confirmed")
+  // One booking can have one review
+  review         Review?
+}
+
+model Review {
+  id         Int      @id @default(autoincrement())
+
+  rating     Int
+  feedback   String
+
+  cleanliness Int?
+  hospitality Int?
+  foodQuality Int?
+  locationRating Int?
+  valueForMoney Int?
+
+  createdAt  DateTime @default(now())
+
+  userId     Int
+  bookingId  Int @unique
+
+  user        User    @relation(fields: [userId], references: [id])
+  booking     Booking @relation(fields: [bookingId], references: [id])
 }

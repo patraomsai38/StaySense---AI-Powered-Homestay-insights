@@ -4,7 +4,7 @@ const express = require("express");
 const cors = require("cors");
 const session = require("express-session");
 const passport = require("passport");
-
+const reviewRoutes = require("./routes/review");
 require("./config/passport");
 
 const prisma = require("./prismaClient");
@@ -35,6 +35,7 @@ app.use(
 
 app.use(express.json());
 
+
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -56,6 +57,7 @@ app.use("/api/bookings", bookingRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/homestays", homestayRoutes);
 app.use("/api/location", locationRoutes);
+app.use("/api/reviews", reviewRoutes);
 
 /* ===========================
    GET ALL HOMESTAYS

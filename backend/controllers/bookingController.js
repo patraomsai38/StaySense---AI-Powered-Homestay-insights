@@ -82,13 +82,21 @@ const createBooking = async (req, res) => {
 // Get User Bookings
 // ==============================
 
+// ==============================
+// Get User Bookings
+// ==============================
+
 const getBookings = async (req, res) => {
   try {
+    const userId = Number(req.params.userId);
+
     const bookings = await prisma.booking.findMany({
       where: {
-        userId: Number(req.params.userId),
+        userId,
       },
-
+      include: {
+        homestay: true,
+      },
       orderBy: {
         createdAt: "desc",
       },
@@ -99,6 +107,7 @@ const getBookings = async (req, res) => {
     console.error(error);
 
     res.status(500).json({
+      success: false,
       message: "Server Error",
     });
   }
