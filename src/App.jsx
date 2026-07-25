@@ -10,6 +10,7 @@ import MyBookings from "./Pages/MyBookings";
 import ComponentsDemo from "./Pages/ComponentsDemo";
 import AIAssistant from "./Pages/AIAssistant";
 
+
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
@@ -22,8 +23,14 @@ function App() {
 
         <Route path="/about" element={<About />} />
 
-        <Route path="/dashboard" element={<Dashboard />} />
-
+        <Route
+  path="/dashboard"
+  element={
+    <ProtectedRoute>
+      <Dashboard />
+    </ProtectedRoute>
+  }
+/>
         <Route path="/login" element={<Login />} />
 
         <Route path="/register" element={<Register />} />

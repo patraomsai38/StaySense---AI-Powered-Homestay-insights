@@ -10,6 +10,10 @@ function MyBookings() {
 
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showReviewModal, setShowReviewModal] = useState(false);
+const [selectedBooking, setSelectedBooking] = useState(null);
+const [rating, setRating] = useState(5);
+const [feedback, setFeedback] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -95,6 +99,46 @@ const cancelBooking = async (bookingId) => {
       </>
     );
   }
+  const openReviewModal = (booking) => {
+  setSelectedBooking(booking);
+  setRating(5);
+  setFeedback("");
+  setShowReviewModal(true);
+};
+
+const submitReview = async () => {
+  try {
+    const token = localStorage.getItem("token");
+
+    await axios.post(
+      "http://localhost:5000/api/reviews",
+      {
+        bookingId: selectedBooking.id,
+        rating,
+        feedback,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    alert("Review submitted successfully!");
+
+    setShowReviewModal(false);
+    setFeedback("");
+    setRating(5);
+
+  } catch (error) {
+    console.error(error);
+
+    alert(
+      error.response?.data?.message ||
+      "Failed to submit review."
+    );
+  }
+};
 
   return (
     <>
@@ -181,13 +225,23 @@ const cancelBooking = async (bookingId) => {
                     ₹{booking.estimatedPrice}
                   </p>
 
-                  <button
-                    onClick={() => cancelBooking(booking.id)}
-                    className="mt-5 w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-semibold transition"
-                  >
-                    Cancel Booking
-                  </button>
+                  <div className="mt-5 flex gap-3">
 
+  <button
+    onClick={() => cancelBooking(booking.id)}
+    className="flex-1 bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-semibold transition"
+  >
+    Cancel
+  </button>
+
+  <button
+    onClick={() => openReviewModal(booking)}
+    className="flex-1 bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold transition"
+  >
+    ⭐ Review
+  </button>
+
+</div>
                 </div>
 
               </div>
@@ -198,6 +252,65 @@ const cancelBooking = async (bookingId) => {
         )}
 
       </div>
+      {showReviewModal && (
+  <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+
+    <div className="bg-white dark:bg-gray-800 rounded-xl p-6 w-[90%] max-w-md">
+
+      <h2 className="text-2xl font-bold text-green-700 mb-5">
+        Rate Your Stay
+      </h2>
+
+      <label className="block mb-2 font-semibold">
+        Rating
+      </label>
+
+      <select
+        value={rating}
+        onChange={(e) => setRating(Number(e.target.value))}
+        className="w-full border rounded-lg p-3 mb-4 text-black"
+      >
+        <option value={5}>⭐⭐⭐⭐⭐ (5)</option>
+        <option value={4}>⭐⭐⭐⭐ (4)</option>
+        <option value={3}>⭐⭐⭐ (3)</option>
+        <option value={2}>⭐⭐ (2)</option>
+        <option value={1}>⭐ (1)</option>
+      </select>
+
+      <label className="block mb-2 font-semibold">
+        Feedback
+      </label>
+
+      <textarea
+        rows="5"
+        value={feedback}
+        onChange={(e) => setFeedback(e.target.value)}
+        className="w-full border rounded-lg p-3 text-black"
+        placeholder="Share your experience..."
+      />
+
+      <div className="flex justify-end gap-3 mt-6">
+
+        <button
+          onClick={() => setShowReviewModal(false)}
+          className="px-5 py-2 bg-gray-500 text-white rounded-lg"
+        >
+          Cancel
+        </button>
+
+        <button
+          onClick={submitReview}
+          className="px-5 py-2 bg-green-600 text-white rounded-lg"
+        >
+          Submit
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+)}
 
       <Footer />
     </>
