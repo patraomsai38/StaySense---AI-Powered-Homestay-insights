@@ -21,7 +21,7 @@ function Login() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        `${import.meta.env.VITE_API_URL}/api/auth/login`,
         {
           email,
           password,
@@ -133,15 +133,16 @@ function Login() {
               Login
             </button>
 
+            {/* Google Login */}
             <button
-  onClick={() =>
-    window.location.href =
-      "http://localhost:5000/auth/google"
-  }
-  className="w-full mt-3 border border-red-500 text-red-500 py-3 rounded-lg hover:bg-red-500 hover:text-white transition"
->
-  Sign in with Google
-</button>
+              type="button"
+              onClick={() =>
+                (window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`)
+              }
+              className="w-full mt-3 border border-red-500 text-red-500 py-3 rounded-lg hover:bg-red-500 hover:text-white transition"
+            >
+              Sign in with Google
+            </button>
 
           </form>
 

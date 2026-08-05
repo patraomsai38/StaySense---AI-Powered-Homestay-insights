@@ -10,9 +10,10 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 import { getNearbyHomestays } from "../services/homestayService";
+const API_BASE = import.meta.env.VITE_API_URL;
 
-const LOCATION_API = "http://localhost:5000/api/location/search";
-const BOOKING_API = "http://localhost:5000/api/bookings";
+const LOCATION_API = `${API_BASE}/api/location/search`;
+const BOOKING_API = `${API_BASE}/api/bookings`;
 
 function Booking() {
   const navigate = useNavigate();

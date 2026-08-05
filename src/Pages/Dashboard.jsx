@@ -50,9 +50,7 @@ const [statusData, setStatusData] = useState([]);
 
   try {
 
-    const res = await fetch(
-      "http://localhost:5000/dashboard"
-    );
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/dashboard`)
 
     const data = await res.json();
 
