@@ -17,7 +17,10 @@ router.get(
     session: false,
   }),
   (req, res) => {
-    res.redirect("http://localhost:5173/login-success?token=" + req.user.token);
+    res.redirect(
+  "https://stay-sense-ai-powered-homestay-insi.vercel.app/login-success?token=" +
+    req.user.token
+);
   }
 );
 

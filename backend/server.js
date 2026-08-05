@@ -28,7 +28,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://YOUR-VERCEL-APP.vercel.app",
+      "https://stay-sense-ai-powered-homestay-insi.vercel.app",
     ],
     credentials: true,
   })
