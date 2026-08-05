@@ -20,22 +20,21 @@ const dashboardRoutes = require("./routes/dashboard");
 
 const app = express();
 
-console.log("Geoapify Key:", process.env.GEOAPIFY_API_KEY);
-
 /* ===========================
    MIDDLEWARE
 =========================== */
 
-// CORS MUST come before routes
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: [
+      "http://localhost:5173",
+      "https://YOUR-VERCEL-APP.vercel.app",
+    ],
     credentials: true,
   })
 );
 
 app.use(express.json());
-
 
 app.use(
   session({
@@ -55,7 +54,6 @@ app.use(passport.session());
 app.use("/api/auth", authRoutes);
 app.use("/auth", googleAuthRoutes);
 app.use("/api/bookings", bookingRoutes);
-
 app.use("/api/ai", aiRoutes);
 app.use("/api/homestays", homestayRoutes);
 app.use("/api/location", locationRoutes);
@@ -256,5 +254,5 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`✅ Server running on http://localhost:${PORT}`);
+  console.log(`✅ Server running on port ${PORT}`);
 });
