@@ -16,6 +16,7 @@ const bookingRoutes = require("./routes/booking");
 const aiRoutes = require("./routes/ai");
 const homestayRoutes = require("./routes/homestays");
 const locationRoutes = require("./routes/location.routes");
+const dashboardRoutes = require("./routes/dashboard");
 
 const app = express();
 
@@ -54,10 +55,12 @@ app.use(passport.session());
 app.use("/api/auth", authRoutes);
 app.use("/auth", googleAuthRoutes);
 app.use("/api/bookings", bookingRoutes);
+
 app.use("/api/ai", aiRoutes);
 app.use("/api/homestays", homestayRoutes);
 app.use("/api/location", locationRoutes);
 app.use("/api/reviews", reviewRoutes);
+app.use("/dashboard", dashboardRoutes);
 
 /* ===========================
    GET ALL HOMESTAYS

@@ -20,7 +20,6 @@ const createBooking = async (req, res) => {
       guests,
     } = req.body;
 
-    // Validation
     if (
       !userId ||
       !homestayName ||
@@ -32,6 +31,7 @@ const createBooking = async (req, res) => {
       !guests
     ) {
       return res.status(400).json({
+        success: false,
         message: "Please fill all required fields.",
       });
     }
@@ -63,24 +63,21 @@ const createBooking = async (req, res) => {
       },
     });
 
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       message: "Booking Successful",
       booking,
     });
+
   } catch (error) {
     console.error(error);
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "Server Error",
     });
   }
 };
-
-// ==============================
-// Get User Bookings
-// ==============================
 
 // ==============================
 // Get User Bookings
@@ -96,17 +93,19 @@ const getBookings = async (req, res) => {
       },
       include: {
         homestay: true,
+        review: true,
       },
       orderBy: {
         createdAt: "desc",
       },
     });
 
-    res.status(200).json(bookings);
+    return res.status(200).json(bookings);
+
   } catch (error) {
     console.error(error);
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "Server Error",
     });
@@ -123,6 +122,8 @@ const cancelBooking = async (req, res) => {
 
     const bookingId = Number(req.params.id);
 
+    const userId = req.user.id;
+
     console.log("Booking ID:", bookingId);
 
     const booking = await prisma.booking.findUnique({
@@ -135,10 +136,38 @@ const cancelBooking = async (req, res) => {
 
     if (!booking) {
       return res.status(404).json({
-        message: "Booking not found",
+        success: false,
+        message: "Booking not found.",
       });
     }
 
+    // Ensure booking belongs to logged-in user
+    if (booking.userId !== userId) {
+      return res.status(403).json({
+        success: false,
+        message: "Unauthorized.",
+      });
+    }
+
+    // Allow cancellation ONLY before check-in
+    const today = new Date();
+
+    if (today >= new Date(booking.checkIn)) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "This booking can no longer be cancelled because the stay has already started or completed.",
+      });
+    }
+
+    // Delete review first (if any)
+    await prisma.review.deleteMany({
+      where: {
+        bookingId: bookingId,
+      },
+    });
+
+    // Delete booking
     await prisma.booking.delete({
       where: {
         id: bookingId,
@@ -149,14 +178,15 @@ const cancelBooking = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: "Booking Cancelled Successfully",
+      message: "Booking Cancelled Successfully.",
     });
 
   } catch (error) {
     console.error("DELETE ERROR:", error);
 
     return res.status(500).json({
-      message: error.message,
+      success: false,
+      message: "Server Error",
     });
   }
 };

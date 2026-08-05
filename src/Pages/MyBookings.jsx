@@ -8,12 +8,40 @@ import Footer from "../components/Footer";
 function MyBookings() {
   const navigate = useNavigate();
 
+  // ==========================
+  // States
+  // ==========================
+
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showReviewModal, setShowReviewModal] = useState(false);
-const [selectedBooking, setSelectedBooking] = useState(null);
-const [rating, setRating] = useState(5);
-const [feedback, setFeedback] = useState("");
+
+  const [showReviewModal, setShowReviewModal] =
+    useState(false);
+
+  const [selectedBooking, setSelectedBooking] =
+    useState(null);
+
+  const [rating, setRating] = useState(5);
+  const [feedback, setFeedback] = useState("");
+
+  const [cleanliness, setCleanliness] =
+    useState(5);
+
+  const [hospitality, setHospitality] =
+    useState(5);
+
+  const [foodQuality, setFoodQuality] =
+    useState(5);
+
+  const [locationRating, setLocationRating] =
+    useState(5);
+
+  const [valueForMoney, setValueForMoney] =
+    useState(5);
+
+  // ==========================
+  // Login Protection
+  // ==========================
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -27,9 +55,14 @@ const [feedback, setFeedback] = useState("");
     fetchBookings();
   }, []);
 
+  // ==========================
+  // Fetch Bookings
+  // ==========================
+
   const fetchBookings = async () => {
     try {
       const userId = localStorage.getItem("userId");
+
       const token = localStorage.getItem("token");
 
       const response = await axios.get(
@@ -42,132 +75,230 @@ const [feedback, setFeedback] = useState("");
       );
 
       setBookings(response.data);
+
     } catch (error) {
+
       console.error(error);
 
       alert(
         error.response?.data?.message ||
           "Failed to load bookings"
       );
+
     } finally {
+
       setLoading(false);
+
+    }
+
+  };
+    // ==========================
+  // Cancel Booking
+  // ==========================
+
+  const cancelBooking = async (bookingId) => {
+    const confirmCancel = window.confirm(
+      "Are you sure you want to cancel this booking?"
+    );
+
+    if (!confirmCancel) return;
+
+    try {
+      const token = localStorage.getItem("token");
+
+      await axios.delete(
+        `http://localhost:5000/api/bookings/${bookingId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setBookings((prevBookings) =>
+        prevBookings.filter(
+          (booking) => booking.id !== bookingId
+        )
+      );
+
+      alert("Booking cancelled successfully.");
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert(
+        error.response?.data?.message ||
+          error.message ||
+          "Failed to cancel booking."
+      );
+
     }
   };
-const cancelBooking = async (bookingId) => {
-  const confirmCancel = window.confirm(
-    "Are you sure you want to cancel this booking?"
-  );
 
-  if (!confirmCancel) return;
+  // ==========================
+  // Open Review Modal
+  // ==========================
 
-  try {
-    const token = localStorage.getItem("token");
+  const openReviewModal = (booking) => {
+    setSelectedBooking(booking);
 
-    await axios.delete(
-      `http://localhost:5000/api/bookings/${bookingId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
+    setRating(5);
+    setFeedback("");
+
+    setCleanliness(5);
+    setHospitality(5);
+    setFoodQuality(5);
+    setLocationRating(5);
+    setValueForMoney(5);
+
+    setShowReviewModal(true);
+  };
+
+  // ==========================
+  // Submit Review
+  // ==========================
+
+  const submitReview = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      await axios.post(
+        "http://localhost:5000/api/reviews",
+        {
+          bookingId: selectedBooking.id,
+          rating,
+          feedback,
+          cleanliness,
+          hospitality,
+          foodQuality,
+          locationRating,
+          valueForMoney,
         },
-      }
-    );
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-    setBookings((prevBookings) =>
-      prevBookings.filter((booking) => booking.id !== bookingId)
-    );
+      alert("Review submitted successfully!");
 
-    alert("Booking cancelled successfully.");
-  } catch (error) {
-    console.error("Delete Error:", error);
+      await fetchBookings();
 
-    alert(
-      error.response?.data?.message ||
-      error.message ||
-      "Failed to cancel booking."
-    );
-  }
-};
+      setShowReviewModal(false);
+
+      setFeedback("");
+      setRating(5);
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert(
+        error.response?.data?.message ||
+          "Failed to submit review."
+      );
+
+    }
+  };
+
+  // ==========================
+  // Loading Screen
+  // ==========================
 
   if (loading) {
     return (
       <>
         <Navbar />
-        <div className="min-h-screen flex items-center justify-center text-xl">
-          Loading bookings...
+
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-100 via-green-50 to-green-200 dark:from-gray-900 dark:via-gray-800 dark:to-black">
+
+          <div className="text-center">
+
+            <div className="w-16 h-16 rounded-full border-4 border-green-600 border-t-transparent animate-spin mx-auto"></div>
+
+            <p className="mt-6 text-xl font-semibold">
+              Loading your bookings...
+            </p>
+
+          </div>
+
         </div>
+
         <Footer />
+
       </>
     );
   }
-  const openReviewModal = (booking) => {
-  setSelectedBooking(booking);
-  setRating(5);
-  setFeedback("");
-  setShowReviewModal(true);
-};
 
-const submitReview = async () => {
-  try {
-    const token = localStorage.getItem("token");
-
-    await axios.post(
-      "http://localhost:5000/api/reviews",
-      {
-        bookingId: selectedBooking.id,
-        rating,
-        feedback,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    alert("Review submitted successfully!");
-
-    setShowReviewModal(false);
-    setFeedback("");
-    setRating(5);
-
-  } catch (error) {
-    console.error(error);
-
-    alert(
-      error.response?.data?.message ||
-      "Failed to submit review."
-    );
-  }
-};
+  // ==========================
+  // JSX
+  // ==========================
 
   return (
     <>
       <Navbar />
 
-      <div className="min-h-screen bg-gradient-to-br from-green-100 via-green-50 to-green-200 dark:from-gray-900 dark:via-gray-800 dark:to-black p-8">
+      <div className="min-h-screen bg-gradient-to-br from-green-100 via-green-50 to-green-200 dark:from-gray-900 dark:via-gray-800 dark:to-black">
 
-        <h1 className="text-4xl font-bold text-center text-green-700 dark:text-green-400 mb-10">
-          My Bookings
-        </h1>
+        <main className="max-w-7xl mx-auto px-6 lg:px-8 pt-32 pb-16">
+
+          {/* Hero Section */}
+
+          <div className="max-w-4xl mx-auto text-center mb-14">
+
+            <span className="inline-block bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 px-5 py-2 rounded-full text-sm font-semibold shadow-md">
+              🏡 Your Travel Dashboard
+            </span>
+
+            <h1 className="mt-6 text-5xl md:text-6xl font-extrabold text-green-700 dark:text-green-400">
+              My Bookings
+            </h1>
+
+            <p className="mt-6 text-xl leading-9 text-gray-600 dark:text-gray-300">
+              View, manage and review all your homestay bookings in one place.
+            </p>
+
+          </div>
+                  {/* ==========================
+            Empty State / Booking List
+        ========================== */}
 
         {bookings.length === 0 ? (
-          <div className="text-center mt-20">
-            <h2 className="text-2xl font-semibold mb-2">
+
+          <div className="max-w-xl mx-auto py-24 text-center">
+
+            <div className="text-7xl mb-6">
+              🏡
+            </div>
+
+            <h2 className="text-4xl font-bold text-gray-800 dark:text-white">
               No Bookings Found
             </h2>
 
-            <p className="text-gray-600 dark:text-gray-300">
-              Book your first homestay to see it here.
+            <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
+              Book your first homestay and it will appear here.
             </p>
+
+            <button
+              onClick={() => navigate("/booking")}
+              className="mt-8 bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-xl font-semibold shadow-lg transition hover:scale-105"
+            >
+              Explore Homestays
+            </button>
+
           </div>
+
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+          <div className="max-w-7xl mx-auto grid md:grid-cols-2 xl:grid-cols-3 gap-8">
 
             {bookings.map((booking) => (
 
               <div
                 key={booking.id}
-                className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden hover:scale-105 transition duration-300"
+                className="bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
               >
 
                 <img
@@ -176,7 +307,7 @@ const submitReview = async () => {
                     "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800"
                   }
                   alt={booking.homestayName}
-                  className="w-full h-52 object-cover"
+                  className="w-full h-56 object-cover"
                 />
 
                 <div className="p-6">
@@ -185,63 +316,136 @@ const submitReview = async () => {
                     {booking.homestayName}
                   </h2>
 
-                  <p className="mt-2 text-gray-600 dark:text-gray-300">
+                  <p className="mt-3 text-gray-600 dark:text-gray-300">
                     📍 {booking.address}
                   </p>
 
                   {booking.category && (
-                    <p className="mt-2">
+
+                    <p className="mt-3">
                       🏡 <strong>Category:</strong> {booking.category}
                     </p>
+
                   )}
 
-                  <p className="mt-3">
+                  <p className="mt-4">
                     📅 <strong>Check In:</strong>{" "}
                     {new Date(
                       booking.checkIn
                     ).toLocaleDateString()}
                   </p>
 
-                  <p>
+                  <p className="mt-2">
                     📅 <strong>Check Out:</strong>{" "}
                     {new Date(
                       booking.checkOut
                     ).toLocaleDateString()}
                   </p>
 
-                  <p>
+                  <p className="mt-2">
                     👥 <strong>Guests:</strong>{" "}
                     {booking.guests}
                   </p>
 
                   <p className="mt-2">
                     📌 <strong>Status:</strong>{" "}
-                    <span className="text-green-600 font-semibold">
+                    <span className="font-semibold text-green-600">
                       {booking.status}
                     </span>
                   </p>
 
-                  <p className="text-2xl font-bold text-green-700 mt-4">
+                  <p className="mt-5 text-3xl font-bold text-green-700">
                     ₹{booking.estimatedPrice}
                   </p>
 
-                  <div className="mt-5 flex gap-3">
+                  <div className="mt-6 flex gap-3">
 
-  <button
-    onClick={() => cancelBooking(booking.id)}
-    className="flex-1 bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-semibold transition"
-  >
-    Cancel
-  </button>
+                    {(() => {
 
-  <button
-    onClick={() => openReviewModal(booking)}
-    className="flex-1 bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold transition"
-  >
-    ⭐ Review
-  </button>
+                      const today = new Date();
 
-</div>
+                      const checkIn = new Date(
+                        booking.checkIn
+                      );
+
+                      const checkOut = new Date(
+                        booking.checkOut
+                      );
+
+                      if (today < checkIn) {
+                        return (
+                          <button
+                            onClick={() =>
+                              cancelBooking(booking.id)
+                            }
+                            className="flex-1 bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl font-semibold transition"
+                          >
+                            Cancel Booking
+                          </button>
+                        );
+                      }
+
+                      if (
+                        today >= checkIn &&
+                        today <= checkOut
+                      ) {
+                        return (
+                          <button
+                            disabled
+                            className="flex-1 bg-yellow-500 text-white py-3 rounded-xl cursor-not-allowed"
+                          >
+                            Stay in Progress
+                          </button>
+                        );
+                      }
+
+                      return (
+                        <button
+                          disabled
+                          className="flex-1 bg-gray-500 text-white py-3 rounded-xl cursor-not-allowed"
+                        >
+                          Booking Completed
+                        </button>
+                      );
+
+                    })()}
+                                        {/* Review Button */}
+
+                    {new Date() > new Date(booking.checkOut) ? (
+
+                      booking.review ? (
+
+                        <button
+                          disabled
+                          className="flex-1 bg-green-600 text-white py-3 rounded-xl cursor-not-allowed font-semibold"
+                        >
+                          ✅ Review Submitted
+                        </button>
+
+                      ) : (
+
+                        <button
+                          onClick={() => openReviewModal(booking)}
+                          className="flex-1 bg-yellow-500 hover:bg-yellow-600 text-white py-3 rounded-xl font-semibold transition"
+                        >
+                          ⭐ Review
+                        </button>
+
+                      )
+
+                    ) : (
+
+                      <button
+                        disabled
+                        className="flex-1 bg-gray-400 text-white py-3 rounded-xl cursor-not-allowed"
+                      >
+                        Review Available After Stay
+                      </button>
+
+                    )}
+
+                  </div>
+
                 </div>
 
               </div>
@@ -249,72 +453,136 @@ const submitReview = async () => {
             ))}
 
           </div>
+
         )}
 
-      </div>
+      </main>
+
+      {/* ==========================
+          Review Modal
+      ========================== */}
+
       {showReviewModal && (
-  <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
 
-    <div className="bg-white dark:bg-gray-800 rounded-xl p-6 w-[90%] max-w-md">
+        <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
 
-      <h2 className="text-2xl font-bold text-green-700 mb-5">
-        Rate Your Stay
-      </h2>
+          <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-8">
 
-      <label className="block mb-2 font-semibold">
-        Rating
-      </label>
+            <h2 className="text-3xl font-bold text-green-700 dark:text-green-400 mb-6">
+              Rate Your Stay
+            </h2>
 
-      <select
-        value={rating}
-        onChange={(e) => setRating(Number(e.target.value))}
-        className="w-full border rounded-lg p-3 mb-4 text-black"
-      >
-        <option value={5}>⭐⭐⭐⭐⭐ (5)</option>
-        <option value={4}>⭐⭐⭐⭐ (4)</option>
-        <option value={3}>⭐⭐⭐ (3)</option>
-        <option value={2}>⭐⭐ (2)</option>
-        <option value={1}>⭐ (1)</option>
-      </select>
+            <label className="block font-semibold mb-2">
+              Overall Rating
+            </label>
 
-      <label className="block mb-2 font-semibold">
-        Feedback
-      </label>
+            <select
+              value={rating}
+              onChange={(e) => setRating(Number(e.target.value))}
+              className="w-full border rounded-xl p-3 mb-5 text-black"
+            >
+              {[5, 4, 3, 2, 1].map((num) => (
+                <option key={num} value={num}>
+                  {"⭐".repeat(num)} ({num})
+                </option>
+              ))}
+            </select>
 
-      <textarea
-        rows="5"
-        value={feedback}
-        onChange={(e) => setFeedback(e.target.value)}
-        className="w-full border rounded-lg p-3 text-black"
-        placeholder="Share your experience..."
-      />
+            {[
+              {
+                label: "Cleanliness",
+                value: cleanliness,
+                setter: setCleanliness,
+              },
+              {
+                label: "Hospitality",
+                value: hospitality,
+                setter: setHospitality,
+              },
+              {
+                label: "Food Quality",
+                value: foodQuality,
+                setter: setFoodQuality,
+              },
+              {
+                label: "Location",
+                value: locationRating,
+                setter: setLocationRating,
+              },
+              {
+                label: "Value for Money",
+                value: valueForMoney,
+                setter: setValueForMoney,
+              },
+            ].map((item) => (
 
-      <div className="flex justify-end gap-3 mt-6">
+              <div key={item.label} className="mb-5">
 
-        <button
-          onClick={() => setShowReviewModal(false)}
-          className="px-5 py-2 bg-gray-500 text-white rounded-lg"
-        >
-          Cancel
-        </button>
+                <label className="block font-semibold mb-2">
+                  {item.label}
+                </label>
 
-        <button
-          onClick={submitReview}
-          className="px-5 py-2 bg-green-600 text-white rounded-lg"
-        >
-          Submit
-        </button>
+                <select
+                  value={item.value}
+                  onChange={(e) =>
+                    item.setter(Number(e.target.value))
+                  }
+                  className="w-full border rounded-xl p-3 text-black"
+                >
+                  {[5, 4, 3, 2, 1].map((num) => (
+                    <option key={num} value={num}>
+                      {"⭐".repeat(num)} ({num})
+                    </option>
+                  ))}
+                </select>
 
-      </div>
+              </div>
+
+            ))}
+
+            <label className="block font-semibold mb-2">
+              Feedback
+            </label>
+
+            <textarea
+              rows="5"
+              value={feedback}
+              onChange={(e) => setFeedback(e.target.value)}
+              placeholder="Share your experience..."
+              className="w-full border rounded-xl p-3 text-black"
+            />
+
+            <div className="flex justify-end gap-4 mt-8">
+
+              <button
+                onClick={() => setShowReviewModal(false)}
+                className="px-6 py-3 rounded-xl bg-gray-500 hover:bg-gray-600 text-white transition"
+              >
+                Cancel
+              </button>
+
+              <button
+                onClick={submitReview}
+                className="px-6 py-3 rounded-xl bg-green-600 hover:bg-green-700 text-white transition"
+              >
+                Submit Review
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      )}
+
+      <Footer />
 
     </div>
 
-  </div>
-)}
+  </>
+);
 
-      <Footer />
-    </>
-  );
 }
 
 export default MyBookings;

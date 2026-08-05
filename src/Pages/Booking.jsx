@@ -2,6 +2,10 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+import HomestayCard from "../components/booking/HomestayCard";
+import BookingModal from "../components/booking/BookingModal";
+import BookingSuccess from "../components/booking/BookingSuccess";
+
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
@@ -12,10 +16,6 @@ const BOOKING_API = "http://localhost:5000/api/bookings";
 
 function Booking() {
   const navigate = useNavigate();
-
-  // ==========================
-  // States
-  // ==========================
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -186,7 +186,8 @@ function Booking() {
       guests: 1,
     });
   };
-    // ==========================
+
+  // ==========================
   // Confirm Booking
   // ==========================
 
@@ -220,32 +221,22 @@ function Booking() {
 
       const bookingPayload = {
         userId: Number(userId),
-
         homestayName:
           selectedStay?.properties?.name || "Unnamed Homestay",
-
         address:
           selectedStay?.properties?.formatted ||
           "Unknown Address",
-
         latitude: selectedStay?.properties?.lat,
-
         longitude: selectedStay?.properties?.lon,
-
         estimatedPrice:
           selectedStay?.estimatedPrice || 0,
-
         category:
           selectedStay?.properties?.categories?.[0]
             ?.replace("accommodation.", "")
             ?.replaceAll("_", " ") || "Homestay",
-
         image: selectedStay?.image,
-
         checkIn: bookingData.checkIn,
-
         checkOut: bookingData.checkOut,
-
         guests: Number(bookingData.guests),
       };
 
@@ -260,9 +251,7 @@ function Booking() {
       );
 
       setConfirmedStay(response.data.booking);
-
       setBookingSuccess(true);
-
       setSelectedStay(null);
 
       const user =
@@ -285,61 +274,57 @@ function Booking() {
     }
   };
 
-  // ==========================
-  // Start JSX
-  // ==========================
-
   return (
     <div className="min-h-screen bg-green-50 dark:bg-gray-900 dark:text-white transition-all duration-300">
 
       <Navbar />
 
-      <main className="max-w-7xl mx-auto px-6 py-10">
+      <main className="max-w-7xl mx-auto px-6 lg:px-8 pt-32 pb-16">
 
-        {/* Heading */}
+        {/* Hero */}
 
-        <div className="text-center mb-10">
+        <div className="max-w-4xl mx-auto text-center mb-14">
 
-          <h1 className="text-5xl font-bold text-green-700 dark:text-green-400">
+          <span className="inline-block bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 px-5 py-2 rounded-full text-sm font-semibold shadow-md">
+            🌿 AI Powered Booking
+          </span>
+
+          <h1 className="mt-6 text-5xl md:text-6xl font-extrabold text-green-700 dark:text-green-400 leading-tight">
             Discover Nearby Homestays
           </h1>
 
-          <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
-            Find beautiful homestays near your current location
-            or search anywhere across India.
+          <p className="mt-6 text-xl leading-9 text-gray-600 dark:text-gray-300">
+            Find beautiful homestays near your current location or search
+            anywhere across India.
           </p>
 
         </div>
 
-        {/* Search Section */}
+        {/* Search Bar */}
 
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mb-10">
+        <div className="max-w-6xl mx-auto bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-6 mb-14">
 
-          <div className="grid lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
 
             <input
               type="text"
               placeholder="Search city (Goa, Mussoorie...)"
               value={searchCity}
-              onChange={(e) =>
-                setSearchCity(e.target.value)
-              }
-              className="border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-green-600"
+              onChange={(e) => setSearchCity(e.target.value)}
+              className="border border-gray-300 dark:border-gray-600 rounded-xl px-5 py-4 dark:bg-gray-700 focus:ring-2 focus:ring-green-600 outline-none"
             />
 
             <button
               onClick={searchLocation}
-              className="bg-green-700 hover:bg-green-800 text-white rounded-lg py-3 font-semibold"
+              className="bg-green-700 hover:bg-green-800 text-white rounded-xl py-4 font-semibold transition"
             >
               🔍 Search
             </button>
 
             <select
               value={budget}
-              onChange={(e) =>
-                setBudget(e.target.value)
-              }
-              className="border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 dark:bg-gray-700"
+              onChange={(e) => setBudget(e.target.value)}
+              className="border border-gray-300 dark:border-gray-600 rounded-xl px-5 py-4 dark:bg-gray-700"
             >
               <option value="all">All Budgets</option>
               <option value="2000">Under ₹2000</option>
@@ -349,7 +334,7 @@ function Booking() {
 
             <button
               onClick={getCurrentLocation}
-              className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg py-3 font-semibold"
+              className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl py-4 font-semibold transition"
             >
               📍 Current Location
             </button>
@@ -357,17 +342,20 @@ function Booking() {
           </div>
 
         </div>
+
                 {/* ==========================
             Loading
         ========================== */}
 
         {loading && (
-          <div className="flex flex-col items-center justify-center py-24">
-            <div className="animate-spin rounded-full h-16 w-16 border-4 border-green-600 border-t-transparent"></div>
+          <div className="flex flex-col items-center justify-center py-32">
+
+            <div className="h-16 w-16 animate-spin rounded-full border-4 border-green-600 border-t-transparent"></div>
 
             <p className="mt-6 text-xl font-semibold">
               Finding nearby homestays...
             </p>
+
           </div>
         )}
 
@@ -376,11 +364,15 @@ function Booking() {
         ========================== */}
 
         {!loading && error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 rounded-xl p-6 text-center">
-            <h2 className="text-2xl font-bold">
+
+          <div className="max-w-3xl mx-auto rounded-2xl border border-red-300 bg-red-50 p-8 text-center">
+
+            <h2 className="text-2xl font-bold text-red-600">
               {error}
             </h2>
+
           </div>
+
         )}
 
         {/* ==========================
@@ -390,17 +382,19 @@ function Booking() {
         {!loading &&
           !error &&
           filteredHomestays.length === 0 && (
-            <div className="text-center py-20">
+
+            <div className="py-24 text-center">
 
               <h2 className="text-3xl font-bold">
                 No homestays found
               </h2>
 
-              <p className="mt-3 text-gray-600 dark:text-gray-400">
+              <p className="mt-4 text-gray-600 dark:text-gray-400">
                 Try searching another destination.
               </p>
 
             </div>
+
           )}
 
         {/* ==========================
@@ -411,337 +405,52 @@ function Booking() {
           !error &&
           filteredHomestays.length > 0 && (
 
-            <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
+            <div className="max-w-6xl mx-auto grid gap-8 md:grid-cols-2 xl:grid-cols-3">
 
-              {filteredHomestays.map((stay, index) => {
+              {filteredHomestays.map((stay, index) => (
 
-                const name =
-                  stay.properties?.name ||
-                  "Unnamed Homestay";
+                <HomestayCard
+                  key={stay.properties?.place_id || index}
+                  stay={stay}
+                  openDirections={openDirections}
+                  handleBookNow={handleBookNow}
+                />
 
-                const address =
-                  stay.properties?.formatted ||
-                  "Address unavailable";
-
-                const category =
-                  stay.properties?.categories?.[0]
-                    ?.replace("accommodation.", "")
-                    ?.replaceAll("_", " ") ||
-                  "Homestay";
-
-                return (
-
-                  <div
-                    key={stay.properties?.place_id || index}
-                    className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:-translate-y-2 transition duration-300"
-                  >
-
-                    <img
-                      src={stay.image}
-                      alt={name}
-                      className="w-full h-56 object-cover"
-                    />
-
-                    <div className="p-6">
-
-                      <h2 className="text-2xl font-bold mb-2">
-                        {name}
-                      </h2>
-
-                      <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">
-                        📍 {address}
-                      </p>
-
-                      <span className="inline-block bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium mb-4">
-                        {category}
-                      </span>
-
-                      <div className="flex justify-between items-center mb-5">
-
-                        <div>
-
-                          <p className="text-sm text-gray-500">
-                            Estimated Price
-                          </p>
-
-                          <h3 className="text-2xl font-bold text-green-700">
-                            ₹{stay.estimatedPrice}
-                          </h3>
-
-                        </div>
-
-                        <div className="text-right">
-
-                          <p className="text-yellow-500 font-semibold">
-                            ⭐ 4.5
-                          </p>
-
-                          <p className="text-sm text-gray-500">
-                            Popular Stay
-                          </p>
-
-                        </div>
-
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-3">
-
-                        <button
-                          onClick={() =>
-                            openDirections(
-                              stay.properties.lat,
-                              stay.properties.lon
-                            )
-                          }
-                          className="bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition"
-                        >
-                          📍 Directions
-                        </button>
-
-                        <button
-                          onClick={() => handleBookNow(stay)}
-                          className="bg-green-700 hover:bg-green-800 text-white py-3 rounded-lg font-semibold transition"
-                        >
-                          Book Now
-                        </button>
-
-                      </div>
-
-                    </div>
-
-                  </div>
-
-                );
-
-              })}
+              ))}
 
             </div>
 
-          )}        {/* ==========================
+          )}
+
+        {/* ==========================
             Booking Modal
         ========================== */}
 
-        {selectedStay && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4">
+        <BookingModal
+          selectedStay={selectedStay}
+          bookingData={bookingData}
+          setBookingData={setBookingData}
+          handleBooking={handleBooking}
+          setSelectedStay={setSelectedStay}
+        />
 
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-lg p-8">
-
-              <h2 className="text-3xl font-bold text-center text-green-700 dark:text-green-400 mb-6">
-                Book Your Stay
-              </h2>
-
-              <div className="space-y-4">
-
-                <div>
-                  <label className="block font-semibold mb-2">
-                    Guest Name
-                  </label>
-
-                  <input
-                    type="text"
-                    value={bookingData.name}
-                    onChange={(e) =>
-                      setBookingData({
-                        ...bookingData,
-                        name: e.target.value,
-                      })
-                    }
-                    className="w-full border rounded-lg px-4 py-3 dark:bg-gray-700 dark:border-gray-600"
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-
-                  <div>
-                    <label className="block font-semibold mb-2">
-                      Check In
-                    </label>
-
-                    <input
-                      type="date"
-                      value={bookingData.checkIn}
-                      onChange={(e) =>
-                        setBookingData({
-                          ...bookingData,
-                          checkIn: e.target.value,
-                        })
-                      }
-                      className="w-full border rounded-lg px-4 py-3 dark:bg-gray-700 dark:border-gray-600"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block font-semibold mb-2">
-                      Check Out
-                    </label>
-
-                    <input
-                      type="date"
-                      value={bookingData.checkOut}
-                      onChange={(e) =>
-                        setBookingData({
-                          ...bookingData,
-                          checkOut: e.target.value,
-                        })
-                      }
-                      className="w-full border rounded-lg px-4 py-3 dark:bg-gray-700 dark:border-gray-600"
-                    />
-                  </div>
-
-                </div>
-
-                <div>
-
-                  <label className="block font-semibold mb-2">
-                    Guests
-                  </label>
-
-                  <input
-                    type="number"
-                    min="1"
-                    max="10"
-                    value={bookingData.guests}
-                    onChange={(e) =>
-                      setBookingData({
-                        ...bookingData,
-                        guests: e.target.value,
-                      })
-                    }
-                    className="w-full border rounded-lg px-4 py-3 dark:bg-gray-700 dark:border-gray-600"
-                  />
-
-                </div>
-
-                <div className="bg-green-50 dark:bg-gray-700 rounded-xl p-5 mt-6">
-
-                  <h3 className="font-bold text-xl mb-3">
-                    Booking Summary
-                  </h3>
-
-                  <p>
-                    <strong>Homestay:</strong>{" "}
-                    {selectedStay.properties?.name}
-                  </p>
-
-                  <p>
-                    <strong>Price:</strong> ₹
-                    {selectedStay.estimatedPrice} / night
-                  </p>
-
-                  <p>
-                    <strong>Category:</strong>{" "}
-                    {selectedStay.properties?.categories?.[0]
-                      ?.replace("accommodation.", "")
-                      ?.replaceAll("_", " ")}
-                  </p>
-
-                </div>
-
-                <div className="grid grid-cols-2 gap-4 mt-8">
-
-                  <button
-                    onClick={() => setSelectedStay(null)}
-                    className="bg-gray-500 hover:bg-gray-600 text-white py-3 rounded-lg font-semibold"
-                  >
-                    Cancel
-                  </button>
-
-                  <button
-                    onClick={handleBooking}
-                    className="bg-green-700 hover:bg-green-800 text-white py-3 rounded-lg font-semibold"
-                  >
-                    Confirm Booking
-                  </button>
-
-                </div>
-
-              </div>
-
-            </div>
-
-          </div>
-        )}        {/* ==========================
-            Booking Success Popup
+        {/* ==========================
+            Booking Success
         ========================== */}
 
-        {bookingSuccess && confirmedStay && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4">
-
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-md p-8 text-center">
-
-              <div className="text-6xl mb-4">🎉</div>
-
-              <h2 className="text-3xl font-bold text-green-700 dark:text-green-400 mb-4">
-                Booking Confirmed!
-              </h2>
-
-              <p className="text-gray-600 dark:text-gray-300 mb-6">
-                Your booking has been successfully confirmed.
-              </p>
-
-              <div className="bg-green-50 dark:bg-gray-700 rounded-xl p-5 text-left space-y-2">
-
-                <p>
-                  <strong>Homestay:</strong>{" "}
-                  {confirmedStay.homestayName}
-                </p>
-
-                <p>
-                  <strong>Address:</strong>{" "}
-                  {confirmedStay.address}
-                </p>
-
-                <p>
-                  <strong>Guests:</strong>{" "}
-                  {confirmedStay.guests}
-                </p>
-
-                <p>
-                  <strong>Check In:</strong>{" "}
-                  {new Date(
-                    confirmedStay.checkIn
-                  ).toLocaleDateString()}
-                </p>
-
-                <p>
-                  <strong>Check Out:</strong>{" "}
-                  {new Date(
-                    confirmedStay.checkOut
-                  ).toLocaleDateString()}
-                </p>
-
-                <p>
-                  <strong>Price:</strong> ₹
-                  {confirmedStay.estimatedPrice}
-                </p>
-
-              </div>
-
-              <div className="grid grid-cols-2 gap-4 mt-8">
-
-                <button
-                  onClick={() => {
-                    setBookingSuccess(false);
-                    setConfirmedStay(null);
-                  }}
-                  className="bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold"
-                >
-                  Continue
-                </button>
-
-                <button
-                  onClick={() => navigate("/mybookings")}
-                  className="bg-green-700 hover:bg-green-800 text-white py-3 rounded-lg font-semibold"
-                >
-                  My Bookings
-                </button>
-
-              </div>
-
-            </div>
-
-          </div>
-        )}
+        <BookingSuccess
+          showSuccess={bookingSuccess}
+          bookingDetails={{
+            homestay: confirmedStay?.homestayName,
+            name: bookingData.name,
+            guests: confirmedStay?.guests,
+            totalPrice: confirmedStay?.estimatedPrice,
+          }}
+          onClose={() => {
+            setBookingSuccess(false);
+            setConfirmedStay(null);
+          }}
+        />
 
       </main>
 
@@ -752,4 +461,3 @@ function Booking() {
 }
 
 export default Booking;
-  

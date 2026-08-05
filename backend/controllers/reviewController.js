@@ -25,7 +25,10 @@ const createReview = async (req, res) => {
       });
     }
 
+    // =========================
     // Check booking exists
+    // =========================
+
     const booking = await prisma.booking.findUnique({
       where: {
         id: Number(bookingId),
@@ -39,7 +42,10 @@ const createReview = async (req, res) => {
       });
     }
 
+    // =========================
     // Check booking belongs to logged-in user
+    // =========================
+
     if (booking.userId !== userId) {
       return res.status(403).json({
         success: false,
@@ -47,7 +53,23 @@ const createReview = async (req, res) => {
       });
     }
 
+    // =========================
+    // Allow review only after checkout
+    // =========================
+
+    const today = new Date();
+
+    if (today < new Date(booking.checkOut)) {
+      return res.status(400).json({
+        success: false,
+        message: "You can review this stay only after checkout.",
+      });
+    }
+
+    // =========================
     // Prevent duplicate review
+    // =========================
+
     const existingReview = await prisma.review.findUnique({
       where: {
         bookingId: Number(bookingId),
@@ -61,11 +83,15 @@ const createReview = async (req, res) => {
       });
     }
 
+    // =========================
     // Create Review
+    // =========================
+
     const review = await prisma.review.create({
       data: {
         bookingId: Number(bookingId),
         userId,
+
         rating: Number(rating),
         feedback,
 
@@ -96,7 +122,7 @@ const createReview = async (req, res) => {
       },
     });
 
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       message: "Review submitted successfully.",
       review,
@@ -105,7 +131,7 @@ const createReview = async (req, res) => {
   } catch (error) {
     console.error(error);
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "Server Error",
     });
@@ -115,6 +141,7 @@ const createReview = async (req, res) => {
 // =========================
 // Get All Reviews
 // =========================
+
 const getReviews = async (req, res) => {
   try {
     const reviews = await prisma.review.findMany({
@@ -131,7 +158,7 @@ const getReviews = async (req, res) => {
       },
     });
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       reviews,
     });
@@ -139,7 +166,7 @@ const getReviews = async (req, res) => {
   } catch (error) {
     console.error(error);
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "Server Error",
     });

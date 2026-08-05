@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import LoginSuccess from "./Pages/LoginSuccess";
+import Profile from "./Pages/Profile";
 import Home from "./Pages/Home";
 import About from "./Pages/About";
 import Dashboard from "./Pages/Dashboard";
@@ -9,7 +9,8 @@ import Booking from "./Pages/Booking";
 import MyBookings from "./Pages/MyBookings";
 import ComponentsDemo from "./Pages/ComponentsDemo";
 import AIAssistant from "./Pages/AIAssistant";
-
+import LoginSuccess from "./Pages/LoginSuccess";
+import HomestayDetails from "./Pages/HomestayDetails";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -24,13 +25,14 @@ function App() {
         <Route path="/about" element={<About />} />
 
         <Route
-  path="/dashboard"
-  element={
-    <ProtectedRoute>
-      <Dashboard />
-    </ProtectedRoute>
-  }
-/>
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
         <Route path="/login" element={<Login />} />
 
         <Route path="/register" element={<Register />} />
@@ -52,9 +54,24 @@ function App() {
             </ProtectedRoute>
           }
         />
+
         <Route
-    path="/ai"
-    element={<AIAssistant />}
+          path="/homestay-details"
+          element={
+            <ProtectedRoute>
+              <HomestayDetails />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route path="/ai" element={<AIAssistant />} />
+        <Route
+  path="/profile"
+  element={
+    <ProtectedRoute>
+      <Profile />
+    </ProtectedRoute>
+  }
 />
 
         <Route
@@ -63,9 +80,9 @@ function App() {
         />
 
         <Route
-  path="/login-success"
-  element={<LoginSuccess />}
-/>
+          path="/login-success"
+          element={<LoginSuccess />}
+        />
 
       </Routes>
 
