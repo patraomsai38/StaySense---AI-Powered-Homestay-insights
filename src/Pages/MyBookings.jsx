@@ -66,7 +66,7 @@ function MyBookings() {
       const token = localStorage.getItem("token");
 
       const response = await axios.get(
-        `http://localhost:5000/api/bookings/${userId}`,
+        `${import.meta.env.VITE_API_URL}/api/bookings/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -107,7 +107,7 @@ function MyBookings() {
       const token = localStorage.getItem("token");
 
       await axios.delete(
-        `http://localhost:5000/api/bookings/${bookingId}`,
+        `${import.meta.env.VITE_API_URL}/api/bookings/${bookingId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -164,7 +164,7 @@ function MyBookings() {
       const token = localStorage.getItem("token");
 
       await axios.post(
-        "http://localhost:5000/api/reviews",
+        `${import.meta.env.VITE_API_URL}/api/reviews`,
         {
           bookingId: selectedBooking.id,
           rating,
