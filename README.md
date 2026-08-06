@@ -865,30 +865,55 @@ http://localhost:5000/
 
 ---
 
-## 🚧 In Progress
+## 🌐 Deployment Documentation
 
-- Payment Gateway Integration
-- Admin Dashboard
-- Review Sentiment Visualization
-- Personalized Recommendation Engine
-- Booking History Analytics
-- Email Notifications
+### Live Frontend
+https://stay-sense-ai-powered-homestay-insi.vercel.app/
+
+### Live Backend
+https://staysense-backend.onrender.com/
 
 ---
 
-# 🔮 Future Enhancements
+## 🛠️ Tech Stack Summary
 
-- AI-based Review Sentiment Dashboard
-- Personalized Travel Itinerary Generator
-- Secure Payment Gateway Integration
-- Google Maps Navigation
-- Email & SMS Notifications
-- Admin Analytics Dashboard
-- Booking History & Reports
-- AI Recommendation Engine
-- Real-time Availability Tracking
-- Multi-language Support
+### Frontend
+- React.js
+- Vite
+- Tailwind CSS
+- React Router
+- Axios
 
+### Backend
+- Node.js
+- Express.js
+- Passport.js (Google OAuth)
+- JWT Authentication
+- Prisma ORM
+
+### Database
+- PostgreSQL (via Prisma)
+
+### APIs & Services
+- Google Gemini API (AI Travel Assistant)
+- Geoapify Places API
+- Google OAuth 2.0
+
+### Deployment
+- Frontend: Vercel
+- Backend: Render
+- Database: PostgreSQL
+
+---
+
+## ⚠️ Known Limitations on Free Tier
+
+This project is deployed using free-tier cloud services, so the following limitations may be observed:
+
+- **Render Free Tier:** The backend service automatically spins down after approximately **15 minutes of inactivity**. The first request after idle may take **30–60 seconds** while the server wakes up.
+- **Google Gemini API:** The free API may occasionally return **503 – Model is experiencing high demand** during peak usage. Retrying the request after a few seconds usually resolves the issue.
+- **Render Resources:** Limited CPU and memory may result in slightly slower response times during heavy usage.
+- **Vercel Free Tier:** Deployment and bandwidth are subject to free-tier limits, although this does not affect normal project demonstrations.
 ---
 
 # 👨‍💻 Developer
