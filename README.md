@@ -658,6 +658,34 @@ Completed:
 - ✅ Peer Code Reviews
 - ✅ Week 7 Deliverables Successfully Completed
 
+
+## 📸 Application Screenshots
+
+### 🏠 Home Page
+
+![StaySense Home Page](./screenshots/home.png)
+
+### 🔐 Login Page
+
+![StaySense Login Page](./screenshots/login.png)
+
+### 📅 Booking
+
+![StaySense Booking](./screenshots/booking.png)
+
+### 🤖 AI Assistant
+
+![StaySense AI Assistant](./screenshots/ai_assistant.png)
+
+### 📊 Dashboard
+
+<p align="center">
+  <img src="./screenshots/dashboard1.png" width="30%" />
+  <img src="./screenshots/dashboard1.1.png" width="30%" />
+  <img src="./screenshots/dashboard1.2.png" width="30%" />
+</p>
+
+
 ## ⚙ Set Up the Database
 
 Follow these steps to configure the PostgreSQL database using Supabase.
